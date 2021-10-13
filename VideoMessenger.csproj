@@ -12,7 +12,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0" />
         <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.9" />
+        <PackageReference Include="XSockets.Core" Version="5.7.4" />
     </ItemGroup>
 
     <ItemGroup>
@@ -20,6 +22,16 @@
         <Content Remove="$(SpaRoot)**" />
         <None Remove="$(SpaRoot)**" />
         <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="ClientApp\src\Chat\ChatWindow.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="ClientApp\server.js" />
+      <None Remove="ClientApp\src\Chat\Chat - Копировать.js" />
+      <None Remove="ClientApp\src\components\Chat - Копировать.tsx" />
     </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SignalRtcHubs;
 
 namespace VideoMassenger
 {
@@ -25,6 +26,19 @@ namespace VideoMassenger
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/build"; });
+
+            services.AddSignalR();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("ClientPermission", policy =>
+                {
+                    policy.AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .WithOrigins("http://localhost:3000")
+                        .AllowCredentials();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +66,8 @@ namespace VideoMassenger
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
+                endpoints.MapHub<SignalRtcHub>("/hubs/chat");
+
             });
 
             app.UseSpa(spa =>
@@ -63,6 +79,10 @@ namespace VideoMassenger
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+
+            app.UseWebSockets();
+
+            app.UseCors("ClientPermission");
         }
     }
 }

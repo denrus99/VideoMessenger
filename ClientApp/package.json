@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@microsoft/signalr": "^5.0.10",
     "bootstrap": "^4.3.1",
     "connected-react-router": "6.5.2",
+    "freeice": "^2.2.2",
     "history": "4.10.1",
     "jquery": "^3.5.1",
     "merge": "1.2.1",
