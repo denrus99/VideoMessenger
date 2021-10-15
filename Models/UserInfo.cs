@@ -1,7 +1,12 @@
-﻿namespace SignalRtcModels
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+
+namespace SignalRtcModels
 {
-    public class UserInfo
+    public class RoomInfo
     {
-        public string Offer { get; set; }
+        public string RoomId { get; set; }
+        public List<object> peerConnections { get; set; }
     }
 }

@@ -1,17 +1,19 @@
-﻿import React, { useState, useEffect} from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
+import { useParams } from "react-router";
 import { HubConnectionBuilder } from '@microsoft/signalr';
-import VideoSend from './VideoSend';
+/*import connection from '../hooks/useSignalR'*/
 
-
-const Video = () => {
+export default function Room() {
+    const { id: roomId } = useParams();
     const [connection, setConnection] = useState(null);
+    const peerConnections = useRef({});
 
     const configuration = { 'iceServers': [{ 'urls': 'stun:stun.l.google.com:19302' }] }
     const peerConnection = new RTCPeerConnection(configuration);
 
     peerConnection.onicecandidate = function (event) {
         if (event.candidate) {
-            AddIceCandidate(event.candidate);
+            AddIceCandidate(roomId, event.candidate);
         }
     };
 
@@ -22,7 +24,7 @@ const Video = () => {
     sendChannel.onclose = () => console.log('CHANNEL CLOSED!');
 
     peerConnection.ondatachannel = (event) => {
-        sendChannel = event.channel; 
+        sendChannel = event.channel;
     };
 
     useEffect(() => {
@@ -37,58 +39,65 @@ const Video = () => {
     useEffect(() => {
         if (connection) {
             connection.start().then(() => {
-                console.log('Connected!');
+                connection.send('JoinRoom', roomId);
 
-                connection.on('ReceiveMessage', message => {
-                    console.log('Пришел оффер!');
-                    SetRemote(message);
-                    if (message['type'] === 'offer') { 
-                        Answer();
+                connection.on('Created', rooms => {
+                    console.log('Комната создана!');
+                });
+                connection.on('Joined', rooms => {
+                    console.log('Зашел в комнату!');
+                });
+                connection.on('ReceiveOffer', (clientId, offer) => {
+                    console.log('Пришел Offer');
+                    SetRemote(offer);
+                    if (offer['type'] == 'offer') {
+                        createAnswer(clientId);
                     }
                 });
-
                 connection.on('ReceiveIceCandidate', candidate => {
-                    
                     console.log('Пришел кандидат!');
                     peerConnection.addIceCandidate(candidate);
+                });
+                connection.on('JoinedNewClient', clientId => {
+                    createOffer(clientId);
                 });
             });
         }
     }, [connection])
 
-    async function SetRemote(message) {
-        const remoteDesc = new RTCSessionDescription(message);
+    async function SetRemote(offer) {
+        const remoteDesc = new RTCSessionDescription(offer);
         await peerConnection.setRemoteDescription(remoteDesc);
     }
 
-    async function Answer() {
-        const answer = await peerConnection.createAnswer();
-        await peerConnection.setLocalDescription(answer);
-        SendMessage(answer);
-    }
-
-    async function Offer() {
+    async function createOffer(clientId) {
         const offer = await peerConnection.createOffer();
         await peerConnection.setLocalDescription(offer);
-        SendMessage(offer);
-    }
+        SendOffer(clientId, offer);
+    };
 
-    const SendMessage = async (message) => {
+    async function createAnswer(clientId) {
+        const answer = await peerConnection.createAnswer();
+        await peerConnection.setLocalDescription(answer);
+        SendOffer(clientId, answer);
+    };
+
+    const SendOffer = async (clientId, offer) => {
         if (connection.connectionStarted) {
             try {
-                await connection.send('SendMessage', message);
+                await connection.send('SendOffer', clientId, offer);
             }
             catch (e) {
                 console.log(e);
             }
         }
-        console.log('Вызвали SendMessage');
+        console.log('Вызвали SendOffer');
     }
 
-    const AddIceCandidate = async (candidate) => {
+    const AddIceCandidate = async (roomId, candidate) => {
         if (connection.connectionStarted) {
             try {
-                await connection.send('AddIceCandidate', candidate);
+                await connection.send('AddIceCandidate', roomId, candidate);
             }
             catch (e) {
                 console.log(e);
@@ -99,26 +108,18 @@ const Video = () => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        Offer();
-    }
-    const onSubmit2 = (e) => {
-        e.preventDefault();
-        sendChannel.send('MESSAGE');
+        console.log(peerConnection.localDescription);
+        console.log(peerConnection.remoteDescription);
     }
 
     return (
         <div>
-            <VideoSend  peerConnection={peerConnection} SendMessage={SendMessage}></VideoSend>
+            Room
             <form
                 onSubmit={onSubmit}>
-                <button>Send offer</button>
-            </form>
-            <form
-                onSubmit={onSubmit2}>
-                <button>Сообщение</button>
+                <button>Peers</button>
             </form>
         </div>
-        );
-};
-
-export default Video;
+        
+    );
+}
