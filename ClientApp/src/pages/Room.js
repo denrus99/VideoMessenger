@@ -7,25 +7,9 @@ export default function Room() {
     const { id: roomId } = useParams();
     const [connection, setConnection] = useState(null);
     const peerConnections = useRef({});
-
+    const sendChannels = useRef({});
+    let clients = [];
     const configuration = { 'iceServers': [{ 'urls': 'stun:stun.l.google.com:19302' }] }
-    const peerConnection = new RTCPeerConnection(configuration);
-
-    peerConnection.onicecandidate = function (event) {
-        if (event.candidate) {
-            AddIceCandidate(roomId, event.candidate);
-        }
-    };
-
-    let sendChannel = peerConnection.createDataChannel("test");
-
-    sendChannel.onopen = () => console.log('CHANNEL OPENED!');
-    sendChannel.onmessage = (mes) => console.log(mes.data);
-    sendChannel.onclose = () => console.log('CHANNEL CLOSED!');
-
-    peerConnection.ondatachannel = (event) => {
-        sendChannel = event.channel;
-    };
 
     useEffect(() => {
         const connection = new HubConnectionBuilder()
@@ -49,36 +33,60 @@ export default function Room() {
                 });
                 connection.on('ReceiveOffer', (clientId, offer) => {
                     console.log('Пришел Offer');
-                    SetRemote(offer);
+                    SetRemote(clientId, offer);
                     if (offer['type'] == 'offer') {
                         createAnswer(clientId);
                     }
                 });
-                connection.on('ReceiveIceCandidate', candidate => {
+                connection.on('ReceiveIceCandidate', (clientId, candidate) => {
                     console.log('Пришел кандидат!');
-                    peerConnection.addIceCandidate(candidate);
+                    peerConnections.current[clientId].addIceCandidate(candidate);
                 });
                 connection.on('JoinedNewClient', clientId => {
+                    createPeerConnection(clientId);
                     createOffer(clientId);
                 });
             });
         }
     }, [connection])
 
-    async function SetRemote(offer) {
+    function createPeerConnection(clientId) {
+        clients.push(clientId);
+        peerConnections.current[clientId] = new RTCPeerConnection(configuration);
+        peerConnections.current[clientId].onicecandidate = function (event) {
+            if (event.candidate) {
+                AddIceCandidate(roomId, event.candidate);
+            }
+        };
+
+        sendChannels.current[clientId] = peerConnections.current[clientId].createDataChannel("test");
+
+        sendChannels.current[clientId].onopen = () => console.log('CHANNEL OPENED!');
+        sendChannels.current[clientId].onmessage = (mes) => console.log(mes.data);
+        sendChannels.current[clientId].onclose = () => console.log('CHANNEL CLOSED!');
+
+        peerConnections.current[clientId].ondatachannel = (event) => {
+            sendChannels.current[clientId] = event.channel;
+        };
+    }
+
+    async function SetRemote(clientId, offer) {
         const remoteDesc = new RTCSessionDescription(offer);
-        await peerConnection.setRemoteDescription(remoteDesc);
+        if (peerConnections.current[clientId] == null) {
+            createPeerConnection(clientId);
+        }
+        await peerConnections.current[clientId].setRemoteDescription(remoteDesc);
     }
 
     async function createOffer(clientId) {
-        const offer = await peerConnection.createOffer();
-        await peerConnection.setLocalDescription(offer);
+        const offer = await peerConnections.current[clientId].createOffer();
+        await peerConnections.current[clientId].setLocalDescription(offer);
         SendOffer(clientId, offer);
     };
 
     async function createAnswer(clientId) {
-        const answer = await peerConnection.createAnswer();
-        await peerConnection.setLocalDescription(answer);
+        const answer = await peerConnections.current[clientId].createAnswer();
+        await peerConnections.current[clientId].setLocalDescription(answer);
         SendOffer(clientId, answer);
     };
 
@@ -108,8 +116,9 @@ export default function Room() {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        console.log(peerConnection.localDescription);
-        console.log(peerConnection.remoteDescription);
+        for (let i = 1; i <= clients.length; i++) {
+            sendChannels.current[clients[i - 1]].send(`Сообщение ${i} клиенту`);
+        }   
     }
 
     return (

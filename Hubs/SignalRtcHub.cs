@@ -57,7 +57,7 @@ namespace SignalRtcHubs
 
         public async Task AddIceCandidate(string roomId, object obj)
         {
-            await Clients.OthersInGroup(roomId).SendAsync("ReceiveIceCandidate", obj);
+            await Clients.OthersInGroup(roomId).SendAsync("ReceiveIceCandidate", Context.ConnectionId, obj);
         }
 
         //public async Task SendMessage(object obj)
