@@ -19,11 +19,15 @@
 
     <ItemGroup>
         <!-- Don't publish the SPA source files, but do show them in the project files list -->
+        <Compile Remove="ClientApp\src\hooks\tools\**" />
         <Compile Remove="ClientApp\src\pages\Новая папка\**" />
         <Content Remove="$(SpaRoot)**" />
+        <Content Remove="ClientApp\src\hooks\tools\**" />
         <Content Remove="ClientApp\src\pages\Новая папка\**" />
+        <EmbeddedResource Remove="ClientApp\src\hooks\tools\**" />
         <EmbeddedResource Remove="ClientApp\src\pages\Новая папка\**" />
         <None Remove="$(SpaRoot)**" />
+        <None Remove="ClientApp\src\hooks\tools\**" />
         <None Remove="ClientApp\src\pages\Новая папка\**" />
         <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
     </ItemGroup>
@@ -37,6 +41,7 @@
       <None Remove="ClientApp\server.js" />
       <None Remove="ClientApp\src\Chat\Chat - Копировать.js" />
       <None Remove="ClientApp\src\components\Chat - Копировать.tsx" />
+      <None Remove="ClientApp\src\hooks\tools\sockets.js" />
       <None Remove="ClientApp\src\в.cs" />
     </ItemGroup>
 

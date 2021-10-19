@@ -27,23 +27,14 @@ namespace SignalRtcHubs
             }
             else
             {
-                await Clients.OthersInGroup(roomId).SendAsync("JoinedNewClient", Context.ConnectionId);
+                await Clients.OthersInGroup(roomId).SendAsync("JoinedNewClient", Context.ConnectionId, rooms[roomId]);
             }
 
             rooms[roomId].Add(Context.ConnectionId);
             await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
 
-            await Clients.Caller.SendAsync("Joined"); 
+            await Clients.Caller.SendAsync("Joined", rooms[roomId]); 
         }
-
-        //public async Task LeaveRoom(string roomId)
-        //{
-        //    rooms[roomId].Remove(Context.ConnectionId);
-        //    if (rooms[roomId].Count == 0)
-        //        rooms.Remove(roomId);
-                
-        //    await Clients.Caller.SendAsync("Leaved");
-        //}
 
         public async Task GetCreatedRooms()
         {
@@ -59,10 +50,5 @@ namespace SignalRtcHubs
         {
             await Clients.OthersInGroup(roomId).SendAsync("ReceiveIceCandidate", Context.ConnectionId, obj);
         }
-
-        //public async Task SendMessage(object obj)
-        //{
-        //    await Clients.Others.SendAsync("ReceiveMessage", obj);
-        //} 
     }
 }
