@@ -35,3 +35,6 @@ _ReSharper*/
 #Nuget packages folder
 packages/
 .idea/
+#DBSettings
+dbsettings.json
+

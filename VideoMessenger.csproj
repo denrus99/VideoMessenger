@@ -27,14 +27,18 @@
         <!-- Don't publish the SPA source files, but do show them in the project files list -->
         <Compile Remove="ClientApp\src\hooks\tools\**" />
         <Compile Remove="ClientApp\src\pages\Новая папка\**" />
+        <Compile Remove="Database\**" />
         <Content Remove="$(SpaRoot)**" />
         <Content Remove="ClientApp\src\hooks\tools\**" />
         <Content Remove="ClientApp\src\pages\Новая папка\**" />
+        <Content Remove="Database\**" />
         <EmbeddedResource Remove="ClientApp\src\hooks\tools\**" />
         <EmbeddedResource Remove="ClientApp\src\pages\Новая папка\**" />
+        <EmbeddedResource Remove="Database\**" />
         <None Remove="$(SpaRoot)**" />
         <None Remove="ClientApp\src\hooks\tools\**" />
         <None Remove="ClientApp\src\pages\Новая папка\**" />
+        <None Remove="Database\**" />
         <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
     </ItemGroup>
 
@@ -49,10 +53,6 @@
       <None Remove="ClientApp\src\components\Chat - Копировать.tsx" />
       <None Remove="ClientApp\src\hooks\tools\sockets.js" />
       <None Remove="ClientApp\src\в.cs" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Database\" />
     </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

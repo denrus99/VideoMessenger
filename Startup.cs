@@ -6,15 +6,23 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SignalRtcHubs;
 using Microsoft.EntityFrameworkCore;
+using SignalRtcHubs;
 using VideoMessenger.Models;
+
 
 namespace VideoMassenger
 {   
 
     public class Startup
     {
+        private IConfigurationRoot confDB;
+
+        public Startup(IWebHostEnvironment environment)
+        {
+            confDB = new ConfigurationBuilder().SetBasePath(environment.ContentRootPath).AddJsonFile("dbsettings.json").Build();
+        }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -26,7 +34,7 @@ namespace VideoMassenger
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationContext>(options => {
-                options.UseNpgsql("Host=localhost;Port=5432;Database=vidmes;Username=postgres");
+                options.UseNpgsql(confDB.GetConnectionString("DefaultConnection"));
             });
 
             services.AddControllersWithViews();
