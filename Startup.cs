@@ -7,9 +7,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SignalRtcHubs;
+using Microsoft.EntityFrameworkCore;
+using VideoMessenger.Models;
 
 namespace VideoMassenger
-{
+{   
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -22,6 +25,10 @@ namespace VideoMassenger
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<ApplicationContext>(options => {
+                options.UseNpgsql("Host=localhost;Port=5432;Database=vidmes;Username=postgres");
+            });
+
             services.AddControllersWithViews();
 
             // In production, the React files will be served from this directory
@@ -40,6 +47,7 @@ namespace VideoMassenger
                 });
             });
         }
+        
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

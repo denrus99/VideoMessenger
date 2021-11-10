@@ -14,6 +14,12 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0" />
         <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.9" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.12" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.10">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.10" />
         <PackageReference Include="XSockets.Core" Version="5.7.4" />
     </ItemGroup>
 
@@ -43,6 +49,10 @@
       <None Remove="ClientApp\src\components\Chat - Копировать.tsx" />
       <None Remove="ClientApp\src\hooks\tools\sockets.js" />
       <None Remove="ClientApp\src\в.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Database\" />
     </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
