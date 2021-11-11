@@ -1,11 +1,12 @@
-import React from 'react';
-import MessagesContainer from '../components/MessagesContainer/MessagesContainer';
-import cs from './Main.module.css';
-import { Container } from 'reactstrap'
+import React, { createContext, useContext, useReducer } from 'react';
+import Sidebar from '../components/Sidebar/Sidebar';
+
+import EmptyScreen from '../components/Screens/EmptyScreens/EmptyScreen'
+import ChatScreen from '../components/Screens/ChatScreen/ChatScreen';
 
 
 function Main() {
-  const messages = [
+  const chats = [
     {
       user: {
         name: 'Petya',
@@ -18,7 +19,7 @@ function Main() {
         name: 'Vanya',
         avatar: 'midnightblue',
       },
-      text: 'Maksim lox',
+      text: 'Sheeeeeeeeeeeeeeeeeeeesh',
     },
     {
       user: {
@@ -108,28 +109,8 @@ function Main() {
 
   return (
     <>
-      <div className={cs.sidebar}>
-        <div className={cs.userProfile}>
-          <div className={cs.userAvatar} />
-          <div className={cs.userLogin}>User Login</div>
-        </div>
-        <div className={cs.sidebarContainer}>
-          <MessagesContainer messages={messages} />
-          <div className={cs.tools}>
-            {
-              [0, 1, 2, 3, 4].map(index => {
-                return (
-                  <div key={index} className={cs.tool}></div>
-                );
-              })
-            }
-          </div>
-        </div>
-      </div>
-
-      <div className={cs.base}>
-
-      </div>
+      <Sidebar chats={chats} />
+      <ChatScreen />
     </>
   );
 }

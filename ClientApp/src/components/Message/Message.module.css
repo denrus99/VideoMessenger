@@ -1,22 +1,14 @@
 .message {
     display: flex;
     padding: 5px 10px;
-    margin-top: 5px;
-    
 }
 
-.message:hover {
-    background-color: gray;
-}
-
-.userIcon {
-    width: 50px;
-    height: 50px;
-    background-color: #fff;
-    border-radius: 10px;
-}
-
-.messageContent {
-    flex-grow: 1;
-    padding: 0 10px;
+.messageText {
+    max-width: 50vw;
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    word-wrap: break-word;
+    color: white;
+    background-color: #6c757d;
 }

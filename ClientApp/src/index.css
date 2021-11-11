@@ -13,7 +13,7 @@ code {
 }
 
 #root {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
 }
@@ -29,12 +29,12 @@ code {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #212529;
+  background: #181e25;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background-color: #212529;
+  background-color: #181e25;
   border-radius: 10px;
 }
 
