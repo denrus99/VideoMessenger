@@ -1,0 +1,41 @@
+.chat {
+    display: flex;
+    padding: 10px;
+    border-radius: 0 5px 5px 0;
+}
+
+.chat:hover {
+    cursor: pointer;
+    background-color: #6c757d;
+}
+
+.userIcon {
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.chatContent {
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    padding: 0 10px;
+}
+
+.chatName {
+    font-weight: bold;
+    color: white;
+}
+
+.textMessage {
+    width: 170px;
+    font-size: 14px;
+    color: white;
+    
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}

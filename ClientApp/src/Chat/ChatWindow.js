@@ -1,19 +1,18 @@
 ﻿import React from 'react';
-
 import Message from './Message';
 
 const ChatWindow = (props) => {
-const chat = props.chat
-    .map(m => < Message
+    const chat = props.chat
+        .map(m => < Message
 
-        key ={ Date.now() * Math.random()}
-user ={ m.user}
-message ={ m.message}/>);
+            key={Date.now() * Math.random()}
+            user={m.user}
+            message={m.message} />);
 
-return (
+    return (
 
-    < div >
-            { chat}
+        < div >
+            {chat}
         </ div >
     )
 };

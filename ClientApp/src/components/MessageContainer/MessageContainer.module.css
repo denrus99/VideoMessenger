@@ -1,0 +1,9 @@
+.messageContainer {
+    display: flex;
+    margin-top: auto;
+    flex-direction: column;
+
+    overflow-y: auto;
+    min-height: 466px;
+    max-height: calc(100vh - 201px);
+}

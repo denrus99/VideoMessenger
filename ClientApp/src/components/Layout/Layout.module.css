@@ -1,0 +1,13 @@
+header {
+    min-width: 800px;
+}
+
+main {
+    display: flex;
+    flex-grow: 1;
+    min-width: 800px;
+}
+
+footer {
+    min-width: 800px;
+}

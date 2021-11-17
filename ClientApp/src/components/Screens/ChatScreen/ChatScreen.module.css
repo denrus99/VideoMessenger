@@ -1,0 +1,40 @@
+.screenContainer {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    background-color: #181e25;
+    border-left: 1px solid white;
+    border-top: 1px solid white;
+    /* border-top-left-radius: 10px; */
+}
+
+
+.chatInfo {
+    display: flex;
+    align-items: center;
+    height: 70px;
+    background-color: #212529;
+    color: white;
+}
+
+.chatIcon {
+    height: 50px;
+    width: 50px;
+    margin: 10px;
+    background-color: darkgoldenrod;
+    border-radius: 10px;
+}
+
+.chatName {
+    font-size: 20px;
+    padding: 10px;
+    margin-right: auto;
+}
+
+.btn {
+    height: 50px;
+    width: 50px;
+    padding: 0;
+    margin-right: 10px;
+}

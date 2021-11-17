@@ -1,0 +1,24 @@
+.sendMessageForm {
+    display: flex;
+    padding: 10px;
+    background-color: #212529;
+    height: 50px;
+}
+
+.inputMessage {
+    flex-grow: 1;
+    background-color: #212529;
+    border: 1px solid black;
+    border: none;
+    margin-right: auto;
+    padding: 0;
+    color: white;
+}
+
+.inputMessage:focus {
+    outline: none;
+}
+
+.inputMessage::placeholder {
+    padding-left: 3px;
+}
