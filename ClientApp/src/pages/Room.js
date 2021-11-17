@@ -1,6 +1,6 @@
 ﻿import React, { useEffect } from 'react';
 import { useParams } from "react-router";
-import useNewWebRTC from '../hooks/useNewWebRtc.ts'
+import useNewWebRTC from '../hooks/useNewWebRtc.js'
 
 const Video = ({ stream }) => {
     const localVideo = React.createRef();

@@ -1,16 +1,11 @@
 ﻿import { useEffect, useState} from 'react';
-import {HubConnectionBuilder, HubConnection} from "@microsoft/signalr";
-
-enum Role {
-    Caller = "Caller",
-    Callee = "Callee"
-}
+import {HubConnectionBuilder} from "@microsoft/signalr";
 
 const configuration = { 'iceServers': [{ 'urls': 'stun:stun.l.google.com:19302' }] };
 
-export default function useNewWebRTC(roomId: any) {
-    const [signalConnection, setSignalConnection] = useState<HubConnection>();
-    const [localStream, setLocalStream] = useState<MediaStream>();
+export default function useNewWebRTC(roomId) {
+    const [signalConnection, setSignalConnection] = useState();
+    const [localStream, setLocalStream] = useState();
     const [remoteStreams, setRemoteStreams] = useState([]);
     //TODO: Если не пригодится, можно убрать. В принципе все соединения хранятся в замыканиях.
     const [rtcConnections, setRtcConnections] = useState({});
@@ -75,7 +70,7 @@ export default function useNewWebRTC(roomId: any) {
                         signalConnection.send('AddIceCandidate', roomId, event.candidate);                        
                     }
                 };
-                const tempStreams: string[] = [];
+                const tempStreams = [];
                 newRtcConnection.ontrack = (event) => {
                     if (!tempStreams.some((stream) => stream === event.streams[0].id))
                     {
@@ -96,7 +91,7 @@ export default function useNewWebRTC(roomId: any) {
                             });
                     });
 
-                setRtcConnections(prevState => ({...prevState, [clientId]: { connection: newRtcConnection, role: Role.Caller}}));
+                setRtcConnections(prevState => ({...prevState, [clientId]: { connection: newRtcConnection, role: "Caller"}}));
             });
             
             //Получаем оффер, создаём ответ и отправляем его инициатору
@@ -115,7 +110,7 @@ export default function useNewWebRTC(roomId: any) {
                     // @ts-ignore
                     newRtcConnection.addTrack(track, localStream);
                 });
-                const tempStreams: string[] = [];
+                const tempStreams = [];
                 newRtcConnection.ontrack = (event) => {
                     if (!tempStreams.some((stream) => stream === event.streams[0].id))
                     {
@@ -141,7 +136,7 @@ export default function useNewWebRTC(roomId: any) {
                                     .then(() => {
                                         // Отправляем локальный SDP инициатору в качестве ответа на оффер
                                         signalConnection.send('SendAnswer', clientId, newRtcConnection.localDescription);
-                                        setRtcConnections(prevState => ({...prevState, [clientId]: { connection: newRtcConnection, role: Role.Callee}}));
+                                        setRtcConnections(prevState => ({...prevState, [clientId]: { connection: newRtcConnection, role: "Callee"}}));
                                     })
                             })
                     })
