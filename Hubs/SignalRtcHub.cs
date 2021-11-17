@@ -45,6 +45,11 @@ namespace SignalRtcHubs
         {
             await Clients.Client(clientId).SendAsync("ReceiveOffer", Context.ConnectionId, offer);
         }
+        
+        public async Task SendAnswer(string clientId, object answer)
+        {
+            await Clients.Client(clientId).SendAsync("ReceiveAnswer", Context.ConnectionId, answer);
+        }
 
         public async Task AddIceCandidate(string roomId, object obj)
         {
