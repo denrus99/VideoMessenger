@@ -11,12 +11,12 @@ namespace VideoMessenger.Models
 {
     public class ApplicationContext : DbContext
     {
-        public DbSet<User> User { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Friends> Friends { get; set; }
-        public DbSet<Chat> Chat { get; set; }
-        public DbSet<ChatParticipant> ChatParticipant { get; set; }
-        public DbSet<Message> Message { get; set; }
-        public DbSet<Role> Role { get; set; }
+        public DbSet<Chat> Chats { get; set; }
+        public DbSet<ChatParticipant> ChatParticipants { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
         : base(options)
@@ -27,6 +27,13 @@ namespace VideoMessenger.Models
         {
             builder.Entity<ChatParticipant>().HasKey(u => new { u.ChatId, u.UserId });
             builder.Entity<Friends>().HasKey(u => new { u.FriendId, u.UserId });
+            builder.Entity<User>().HasIndex(u => u.Login).IsUnique();
+            builder.Entity<User>().Property(u => u.Login).IsRequired();
+            builder.Entity<User>().HasIndex(u => u.PhoneNumber).IsUnique();
+            builder.Entity<User>().Property(u => u.PhoneNumber).IsRequired();
+            builder.Entity<User>().HasIndex(u => u.EmailAddress).IsUnique();
+            builder.Entity<User>().Property(u => u.EmailAddress).IsRequired();
+            builder.Entity<User>().Property(u => u.Password).IsRequired();
         }
     }
 }

@@ -4,12 +4,12 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace VideoMessenger.Migrations
 {
-    public partial class CreateDB : Migration
+    public partial class Createdatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Chat",
+                name: "Chats",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -19,11 +19,11 @@ namespace VideoMessenger.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Chat", x => x.Id);
+                    table.PrimaryKey("PK_Chats", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Role",
+                name: "Roles",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -32,28 +32,28 @@ namespace VideoMessenger.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Role", x => x.Id);
+                    table.PrimaryKey("PK_Roles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "User",
+                name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Username = table.Column<string>(type: "text", nullable: true),
-                    Login = table.Column<string>(type: "text", nullable: true),
-                    Password = table.Column<string>(type: "text", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "text", nullable: true),
-                    EmailAddress = table.Column<string>(type: "text", nullable: true)
+                    Login = table.Column<string>(type: "text", nullable: false),
+                    Password = table.Column<string>(type: "text", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "text", nullable: false),
+                    EmailAddress = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ChatParticipant",
+                name: "ChatParticipants",
                 columns: table => new
                 {
                     UserId = table.Column<int>(type: "integer", nullable: false),
@@ -62,23 +62,23 @@ namespace VideoMessenger.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ChatParticipant", x => new { x.ChatId, x.UserId });
+                    table.PrimaryKey("PK_ChatParticipants", x => new { x.ChatId, x.UserId });
                     table.ForeignKey(
-                        name: "FK_ChatParticipant_Chat_ChatId",
+                        name: "FK_ChatParticipants_Chats_ChatId",
                         column: x => x.ChatId,
-                        principalTable: "Chat",
+                        principalTable: "Chats",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ChatParticipant_Role_RoleId",
+                        name: "FK_ChatParticipants_Roles_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "Role",
+                        principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ChatParticipant_User_UserId",
+                        name: "FK_ChatParticipants_Users_UserId",
                         column: x => x.UserId,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -94,21 +94,21 @@ namespace VideoMessenger.Migrations
                 {
                     table.PrimaryKey("PK_Friends", x => new { x.FriendId, x.UserId });
                     table.ForeignKey(
-                        name: "FK_Friends_User_FriendId",
+                        name: "FK_Friends_Users_FriendId",
                         column: x => x.FriendId,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Friends_User_UserId",
+                        name: "FK_Friends_Users_UserId",
                         column: x => x.UserId,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Message",
+                name: "Messages",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -121,29 +121,29 @@ namespace VideoMessenger.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Message", x => x.Id);
+                    table.PrimaryKey("PK_Messages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Message_Chat_ChatId",
+                        name: "FK_Messages_Chats_ChatId",
                         column: x => x.ChatId,
-                        principalTable: "Chat",
+                        principalTable: "Chats",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Message_User_SenderId",
+                        name: "FK_Messages_Users_SenderId",
                         column: x => x.SenderId,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChatParticipant_RoleId",
-                table: "ChatParticipant",
+                name: "IX_ChatParticipants_RoleId",
+                table: "ChatParticipants",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChatParticipant_UserId",
-                table: "ChatParticipant",
+                name: "IX_ChatParticipants_UserId",
+                table: "ChatParticipants",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -152,35 +152,53 @@ namespace VideoMessenger.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Message_ChatId",
-                table: "Message",
+                name: "IX_Messages_ChatId",
+                table: "Messages",
                 column: "ChatId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Message_SenderId",
-                table: "Message",
+                name: "IX_Messages_SenderId",
+                table: "Messages",
                 column: "SenderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_EmailAddress",
+                table: "Users",
+                column: "EmailAddress",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Login",
+                table: "Users",
+                column: "Login",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_PhoneNumber",
+                table: "Users",
+                column: "PhoneNumber",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ChatParticipant");
+                name: "ChatParticipants");
 
             migrationBuilder.DropTable(
                 name: "Friends");
 
             migrationBuilder.DropTable(
-                name: "Message");
+                name: "Messages");
 
             migrationBuilder.DropTable(
-                name: "Role");
+                name: "Roles");
 
             migrationBuilder.DropTable(
-                name: "Chat");
+                name: "Chats");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "Users");
         }
     }
 }

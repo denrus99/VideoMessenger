@@ -43,7 +43,7 @@ namespace VideoMessenger.Controllers
                 PhoneNumber = phone,
                 EmailAddress = email
             };
-            db.User.Add(user);
+            db.Users.Add(user);
             db.SaveChanges();
         }
     }
