@@ -12,5 +12,11 @@ namespace VideoMessenger.Controllers
         {
             return View();
         }
+
+        [Route("chats/{id:int}/messages")]
+        public async Task<IActionResult> GetChatMessages(int id)
+        {
+            return Content(id.ToString());
+        }
     }
 }

@@ -9,5 +9,11 @@ namespace VideoMessenger.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+
+        public Role(string name, int id = 0)
+        {
+            Id = id;
+            Name = name;
+        }
     }
 }
