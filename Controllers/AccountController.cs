@@ -26,7 +26,7 @@ namespace AuthApp.Controllers
         // Метод для авторизации пользователя
         [HttpPost]
         [Route("/auth")]
-        public async Task<IActionResult> Login(LoginModel model)
+        public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
             // Проверка данных из формы
             if (ModelState.IsValid)
@@ -46,7 +46,7 @@ namespace AuthApp.Controllers
         // Метод регистрации нового пользователя
         [HttpPost]
         [Route("/register")]
-        public async Task<IActionResult> Register(RegisterModel model)
+        public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
             if (ModelState.IsValid)
             {

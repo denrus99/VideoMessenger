@@ -16,26 +16,11 @@ function App() {
   return (
     <Router>
       <Suspense fallback={<Loading />}>
-        <Layout>
-          <Rouiting />
-        </Layout>
+        {/*<Layout>*/}
+          <Main/>
+        {/*</Layout>*/}
       </Suspense>
     </Router>
-  );
-}
-
-const Rouiting = () => {
-  return (
-    <Switch>
-      <Route exact path='/' component={Home} />
-      <Route path='/about' component={About} />
-      <Route path='/signin' exact component={Signin} />
-      <Route exact path='/room/:id' component={Room} />
-      <Route path='/lobby' component={Lobby} />
-      <Route path='/chat' component={Chat} />
-      <Route path='/video' component={Video} />
-      <Route path='/main' component={Main} />
-    </Switch >
   );
 }
 

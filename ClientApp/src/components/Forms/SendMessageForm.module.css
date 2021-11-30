@@ -1,24 +1,44 @@
-.sendMessageForm {
-    display: flex;
-    padding: 10px;
-    background-color: #212529;
-    height: 50px;
+.inputMessage {
+    /*padding: 10px;*/
+    background-color: #FFF;
+    height: 60px;
+    width: calc(80vw - 80px);
+    border-radius: 60px;
+    padding-left: 10px;
+    margin: 10px;
+    box-shadow: 0 0 2px 2px #000;
+    border: 0;
 }
 
-.inputMessage {
-    flex-grow: 1;
-    background-color: #212529;
-    border: 1px solid black;
+.sendMessageForm {
     border: none;
     margin-right: auto;
     padding: 0;
     color: white;
+    display: flex;
 }
 
 .inputMessage:focus {
     outline: none;
 }
 
-.inputMessage::placeholder {
-    padding-left: 3px;
+.sendBtn {
+    background: #FFF;
+    height: 60px;
+    width: 60px;
+    border-radius: 30px;
+    margin: 10px;
+    border: 0;
+    box-shadow: 0 0 5px 2px #000;
+    transition: 0.2s;
+}
+
+.sendBtn:active {
+    transition: 0.2s;
+    box-shadow: 0 0 0 0 #FFF;
+}
+
+.sendBtnImg {
+    height: 40px;
+    width: 40px;
 }

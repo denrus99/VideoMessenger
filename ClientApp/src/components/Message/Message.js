@@ -2,11 +2,11 @@ import React from 'react';
 import cs from './Message.module.css';
 
 
-function Message({ message }) {
+function Message(props) {
   return (
-    <div className={cs.message}>
+    <div className={(props.message.local) ? cs.localMessage : cs.message}>
       <div className={cs.messageText}>
-        {message}
+        {props.message.text}
       </div>
 
     </div>

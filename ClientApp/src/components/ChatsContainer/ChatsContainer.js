@@ -3,12 +3,12 @@ import Chat from '../Chat/Chat';
 import cs from './ChatsContainer.module.css';
 
 
-function ChatsContainer({ chats }) {
+function ChatsContainer(props) {
   return (
     <div className={cs.chatsContainer}>
       {
-        chats.map((chat, index) => {
-          return <Chat key={index} chat={chat}/>
+        props.chats.map((chat, index) => {
+          return <Chat key={index} chat={chat} onChatClick={()=>{props.onChatClick()}}/>
         })
       }
     </div>

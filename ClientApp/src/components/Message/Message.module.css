@@ -3,12 +3,21 @@
     padding: 5px 10px;
 }
 
-.messageText {
-    max-width: 50vw;
-    font-size: 14px;
+.localMessage {
+    display: flex;
+    justify-content: flex-end;
     padding: 5px 10px;
-    border-radius: 5px;
-    word-wrap: break-word;
-    color: white;
-    background-color: #6c757d;
+}
+
+.messageText {
+    color: black;
+    font-size: 24px;
+    line-height: 28px;
+    display: flex;
+    align-items: center;
+    max-width: 50vw;
+    padding: 5px 10px;
+    word-break: break-word;
+    background: #FFFFFF;
+    border-radius: 10px;
 }

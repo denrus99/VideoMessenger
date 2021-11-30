@@ -2,11 +2,11 @@ import React from 'react';
 import cs from './Chat.module.css';
 
 
-function Chat({ chat }) {
+function Chat({ chat, onChatClick }) {
   return (
-    <div className={cs.chat}>
-      <UserIcon color={chat.user.avatar} />
-      <ChatContent fromUser={chat.user.name} textMessage={chat.text} />
+    <div className={cs.chat} onClick={()=>onChatClick()}>
+      {/*<UserIcon color={chat.user.avatar} />*/}
+      <ChatContent fromUser={chat.lastMessage.senderId} textMessage={chat.lastMessage.data} />
     </div>
   );
 }

@@ -2,10 +2,15 @@
     display: flex;
     flex-direction: column;
 
-    width: 270px;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
     overflow-y: auto;
+    overflow-x: hidden;
     min-height: 517px;
-    max-height: calc(100vh - 150px);
+    max-height: calc(100vh - 70px);
 
-    border-top: 1px solid white;
+    /*border-top: 1px solid white;*/
+}
+.chatsContainer::-webkit-scrollbar {
+    display: none;
 }

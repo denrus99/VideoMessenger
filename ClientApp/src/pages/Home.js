@@ -1,9 +1,11 @@
 import React from 'react';
-
+import cs from './Home.module.css'
 
 function About() {
   return (
-    <h1>Home</h1>
+    <div className={cs.homeNotification}>
+      <div>Выберите чат и начните звонок</div>
+    </div>
   );
 }
 

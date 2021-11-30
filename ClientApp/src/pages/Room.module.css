@@ -1,0 +1,117 @@
+.screenContainer {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    box-shadow: inset 0 10px 20px 0px;
+    /*width: 80vw;*/
+}
+
+.videoContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    height: calc(100vh - 190px);
+}
+
+/*.video {*/
+/*    height: 30%;*/
+/*    width: auto;*/
+/*    margin-top: 1%;*/
+/*    border-radius: 5%;*/
+/*    box-shadow: 0 2px 4px 4px;*/
+/*}*/
+
+.callHeader {
+    display: flex;
+    align-items: center;
+    height: 70px;
+    background-color: #E3E5E8;
+    width: 100%;
+    /*color: white;*/
+}
+
+.callIcon {
+    height: 50px;
+    width: 50px;
+    margin: 10px;
+    border: 1px solid;
+    border-radius: 50%;
+    background-size: auto 50px;
+}
+
+.callName {
+    font-size: 20px;
+    padding: 10px;
+    margin-right: auto;
+}
+
+.btn {
+    height: 50px;
+    width: 50px;
+    padding: 0;
+    margin: 10px;
+    border: 0;
+    border-radius: 20%;
+    background: transparent;
+    transition: 0.2s;
+}
+
+.btn:hover {
+    transition: 0.2s;
+    background: #6c757d;
+}
+
+.btnIcon {
+    height: 40px;
+    width: 40px;
+}
+
+.btnDotsIcon {
+    height: 30px;
+    width: 30px;
+}
+
+.callPanel {
+    display: flex;
+    align-self: center;
+    height: 120px;
+}
+
+.panelBtn {
+    height: 100px;
+    width: 100px;
+    padding: 0;
+    margin: 10px;
+    border: 0;
+    border-radius: 50%;
+    background: #FFF;
+    transition: 0.2s;
+    box-shadow: 0 0 6px 2px #000;
+}
+
+.panelBtn:hover {
+    transition: 0.2s;
+    background: #6c757d;
+}
+
+.panelBtnIcon {
+    height: 40px;
+    width: 40px;
+}
+
+.declineBtn {
+    height: 100px;
+    width: 100px;
+    padding: 0;
+    margin: 10px;
+    border: 0;
+    border-radius: 50%;
+    background: #F00;
+    transition: 0.2s;
+    box-shadow: 0 0 6px 2px #000;
+}
+
+.declineBtn:hover {
+    transition: 0.2s;
+    background: #af0000;
+}

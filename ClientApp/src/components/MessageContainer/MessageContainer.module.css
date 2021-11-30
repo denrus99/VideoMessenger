@@ -1,9 +1,15 @@
 .messageContainer {
     display: flex;
     margin-top: auto;
-    flex-direction: column;
+    flex-direction: column-reverse;
 
     overflow-y: auto;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
     min-height: 466px;
-    max-height: calc(100vh - 201px);
+    max-height: calc(100vh - 150px);
+    background: transparent;
+}
+.messageContainer::-webkit-scrollbar {
+    display: none;
 }

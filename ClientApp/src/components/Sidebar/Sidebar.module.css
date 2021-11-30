@@ -1,39 +1,27 @@
 .sidebar {
     display: flex;
     flex-direction: column;
-    width: 350px;
-    background-color: #212529;
+    width: 360px;
+    background-color: transparent;
 }
 
-.userProfile {
+.sidebarHeader {
     height: 70px;
     display: flex;
     align-items: center;
     text-align: center;
+    background: #E3E5E8;
 
     color: white;
     /* border-bottom: 1px solid white; */
 }
 
-.userLogin {
-    font-size: 20px;
-    padding: 10px;
-    color: white;
-}
-
-.userAvatar {
-    height: 50px;
-    width: 50px;
-    margin: 10px;
-    background-color: darkred;
-    border-radius: 10px;
-}
-
 .sidebarContainer {
     display: flex;
     flex-grow: 1;
+    overflow-y: hidden;
 
-    background-color: #181e25;
+    background-color: transparent;
 }
 
 .tools {
@@ -50,9 +38,115 @@
     background-color: #212529;
 }
 
-.tool {
-    width: 60px;
-    height: 60px;
-    background-color: #131313;
+.menuBtn {
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    border-radius: 10%;
+}
+
+.menuIcon {
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    box-shadow: 0 0 6px 2px #000;
+    border-radius: 5px;
+    margin: 0 5px;
+    transition: 0.05s;
+}
+
+.menuIcon:hover {
+    background: #c6c8cb;
+}
+
+.menuIcon:active {
+    transition: 0.05s;
+    box-shadow: 0 0 0 0 #000;
+    cursor: pointer;
+}
+
+.searchPanel {
+    background: #FFF;
+    border-radius: 15px;
+    width: 290px;
+    height: 50px;
+    display: flex;
+}
+
+.searchBtn {
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    border: none;
+}
+
+.searchIcon {
+    width: 30px;
+    height: 30px;
+    background-color: transparent;
+}
+
+.searchInput {
+    border: none;
+    width: 100%;
+    border-radius: 15px;
+    padding-left: 5px;
+}
+
+.sidebarMenu {
+    width: 360px;
+    height: 570px;
+    top: 70px;
+    background: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    z-index: 3;
+    border: 3px solid;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 0 6px 2px #000;
+}
+
+.userAvatar {
+    height: 360px;
+    width: 100%;
+}
+
+.userLogin {
+    background: #E3E5E8;
+    height: 50px;
     border-radius: 10px;
+    margin-bottom: 1px;
+    display: flex;
+}
+
+.userLoginIcon {
+    margin: 10px;
+}
+
+.userEmail {
+    background: #E3E5E8;
+    height: 50px;
+    border-radius: 10px;
+    margin-bottom: 1px;
+    display: flex;
+}
+
+.userEmailIcon {
+    margin: 10px;
+}
+
+.sidebarMenuBtn {
+    background: #E3E5E8;
+    height: 50px;
+    width: 100%;
+    border-radius: 10px;
+    border: none;
+    margin-bottom: 1px;
+    font-weight: bold;
+}
+
+.sidebarMenuBtn:hover {
+    transition: 0.2s;
+    background: #c8cacd;
 }
