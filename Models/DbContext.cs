@@ -27,6 +27,7 @@ namespace VideoMessenger.Models
         {
             builder.Entity<ChatParticipant>().HasKey(u => new { u.ChatId, u.UserId });
             builder.Entity<Friends>().HasKey(u => new { u.FriendId, u.UserId });
+
             builder.Entity<User>().HasIndex(u => u.Login).IsUnique();
             builder.Entity<User>().Property(u => u.Login).IsRequired();
             builder.Entity<User>().HasIndex(u => u.PhoneNumber).IsUnique();
@@ -34,6 +35,15 @@ namespace VideoMessenger.Models
             builder.Entity<User>().HasIndex(u => u.EmailAddress).IsUnique();
             builder.Entity<User>().Property(u => u.EmailAddress).IsRequired();
             builder.Entity<User>().Property(u => u.Password).IsRequired();
+
+            builder.Entity<ChatParticipant>().Property(u => u.ChatId).IsRequired();
+            builder.Entity<ChatParticipant>().Property(u => u.UserId).IsRequired();
+            builder.Entity<ChatParticipant>().Property(u => u.RoleId).IsRequired();
+
+            builder.Entity<Friends>().Property(u => u.UserId).IsRequired();
+            builder.Entity<Friends>().Property(u => u.FriendId).IsRequired();
+
+            builder.Entity<Role>().Property(u => u.Name).IsRequired();
 
             builder.Entity<Role>().HasData(
                 new Role("creator", 1),
