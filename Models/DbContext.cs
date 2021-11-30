@@ -25,11 +25,11 @@ namespace VideoMessenger.Models
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<ChatParticipant>().HasKey(u => new { u.ChatId, u.UserId });
+            builder.Entity<ChatParticipant>().HasKey(u => new { u.ChatId, u.UserId }); // Внешний ключ
             builder.Entity<Friends>().HasKey(u => new { u.FriendId, u.UserId });
 
-            builder.Entity<User>().HasIndex(u => u.Login).IsUnique();
-            builder.Entity<User>().Property(u => u.Login).IsRequired();
+            builder.Entity<User>().HasIndex(u => u.Login).IsUnique(); // Унимкальность поля
+            builder.Entity<User>().Property(u => u.Login).IsRequired(); // атрибут NOT NULL
             builder.Entity<User>().HasIndex(u => u.PhoneNumber).IsUnique();
             builder.Entity<User>().Property(u => u.PhoneNumber).IsRequired();
             builder.Entity<User>().HasIndex(u => u.EmailAddress).IsUnique();
@@ -45,7 +45,7 @@ namespace VideoMessenger.Models
 
             builder.Entity<Role>().Property(u => u.Name).IsRequired();
 
-            builder.Entity<Role>().HasData(
+            builder.Entity<Role>().HasData( // Добавление тестовых данных в бд
                 new Role("creator", 1),
                 new Role("moderator", 2),
                 new Role("user", 3)
