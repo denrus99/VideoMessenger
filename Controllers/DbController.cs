@@ -35,17 +35,16 @@ namespace VideoMessenger.Controllers
         [HttpPost]
         public void AddUser(string username, string login)
         {
-            var baba = username;
-            //var user = new User()
-            //{
-            //    Username = username,
-            //    Login = login,
-            //    Password = password,
-            //    PhoneNumber = phone,
-            //    EmailAddress = email
-            //};
-            //db.User.Add(user);
-            //db.SaveChanges();
+            var user = new User()
+            {
+                Username = username,
+                Login = login,
+                Password = password,
+                PhoneNumber = phone,
+                EmailAddress = email
+            };
+            db.Users.Add(user);
+            db.SaveChanges();
         }
     }
 }

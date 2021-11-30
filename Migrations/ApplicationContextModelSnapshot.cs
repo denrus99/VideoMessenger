@@ -34,7 +34,7 @@ namespace VideoMessenger.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Chat");
+                    b.ToTable("Chats");
                 });
 
             modelBuilder.Entity("VideoMessenger.Models.ChatParticipant", b =>
@@ -54,7 +54,7 @@ namespace VideoMessenger.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ChatParticipant");
+                    b.ToTable("ChatParticipants");
                 });
 
             modelBuilder.Entity("VideoMessenger.Models.Friends", b =>
@@ -100,7 +100,7 @@ namespace VideoMessenger.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Message");
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("VideoMessenger.Models.Role", b =>
@@ -115,7 +115,7 @@ namespace VideoMessenger.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Role");
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("VideoMessenger.Models.User", b =>
@@ -126,15 +126,19 @@ namespace VideoMessenger.Migrations
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("EmailAddress")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Login")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Password")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Username")
@@ -142,7 +146,16 @@ namespace VideoMessenger.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.HasIndex("EmailAddress")
+                        .IsUnique();
+
+                    b.HasIndex("Login")
+                        .IsUnique();
+
+                    b.HasIndex("PhoneNumber")
+                        .IsUnique();
+
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("VideoMessenger.Models.ChatParticipant", b =>
