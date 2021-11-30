@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using VideoMessenger.Models;
@@ -9,9 +10,10 @@ using VideoMessenger.Models;
 namespace VideoMessenger.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20211130172545_Add atributes for some tables")]
+    partial class Addatributesforsometables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,13 +43,13 @@ namespace VideoMessenger.Migrations
                         {
                             Id = -1,
                             ChatName = "RI-390003",
-                            CreationDate = new DateTime(2021, 11, 30, 22, 45, 38, 131, DateTimeKind.Local).AddTicks(4484)
+                            CreationDate = new DateTime(2021, 11, 30, 22, 25, 45, 167, DateTimeKind.Local).AddTicks(4179)
                         },
                         new
                         {
                             Id = -2,
                             ChatName = "Gamers Room",
-                            CreationDate = new DateTime(2021, 12, 2, 22, 45, 38, 132, DateTimeKind.Local).AddTicks(4979)
+                            CreationDate = new DateTime(2021, 12, 2, 22, 25, 45, 168, DateTimeKind.Local).AddTicks(4916)
                         });
                 });
 
@@ -137,35 +139,6 @@ namespace VideoMessenger.Migrations
                     b.HasIndex("SenderId");
 
                     b.ToTable("Messages");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = -1,
-                            ChatId = -1,
-                            CreationDate = new DateTime(2021, 11, 30, 22, 45, 38, 132, DateTimeKind.Local).AddTicks(6804),
-                            Data = "Hello, World!",
-                            IsReaded = false,
-                            SenderId = -1
-                        },
-                        new
-                        {
-                            Id = -2,
-                            ChatId = -2,
-                            CreationDate = new DateTime(2021, 12, 2, 22, 45, 38, 132, DateTimeKind.Local).AddTicks(7437),
-                            Data = "Good bye, World!",
-                            IsReaded = true,
-                            SenderId = -2
-                        },
-                        new
-                        {
-                            Id = -3,
-                            ChatId = -2,
-                            CreationDate = new DateTime(2021, 12, 1, 1, 45, 38, 132, DateTimeKind.Local).AddTicks(7450),
-                            Data = "My life be like, uuuuaaaa",
-                            IsReaded = false,
-                            SenderId = -3
-                        });
                 });
 
             modelBuilder.Entity("VideoMessenger.Models.Role", b =>

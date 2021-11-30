@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using AuthApp.ViewModels; // пространство имен моделей RegisterModel и LoginModel
-using VideoMessenger.Models; // моделей базы данных
+using AuthApp.ViewModels;
+using VideoMessenger.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
@@ -20,15 +20,18 @@ namespace AuthApp.Controllers
             db = context;
         }
 
+        // Метод для авторизации пользователя
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel model)
         {
+            // Проверка данных из формы
             if (ModelState.IsValid)
             {
+                // Ищем пользователя в базе данных
                 var user = await db.Users.FirstOrDefaultAsync(u => u.EmailAddress == model.EmailAddress && u.Password == model.Password);
                 if (user != null)
                 {
-                    await Authenticate(model.EmailAddress); // аутентификация
+                    await Authenticate(model.EmailAddress); // Аутентификация
                     return Ok();
                 }
 
@@ -37,11 +40,13 @@ namespace AuthApp.Controllers
             return NotFound();
         }
 
+        // Метод регистрации нового пользователя
         [HttpPost]
         public async Task<IActionResult> Register(RegisterModel model)
         {
             if (ModelState.IsValid)
             {
+                // Проверяем уникальность полей
                 var user = await db.Users.FirstOrDefaultAsync(u =>
                 u.EmailAddress == model.EmailAddress ||
                 u.Login == model.Login ||
@@ -49,6 +54,7 @@ namespace AuthApp.Controllers
 
                 if (user == null)
                 {
+                    // Добавляем в базу данных
                     db.Users.Add(new User
                     {
                         Login = model.Login,
@@ -56,9 +62,9 @@ namespace AuthApp.Controllers
                         EmailAddress = model.EmailAddress,
                         Password = model.Password
                     });
-                    await db.SaveChangesAsync();
+                    await db.SaveChangesAsync(); // Сохраняем бд
 
-                    await Authenticate(model.EmailAddress); // аутентификация
+                    await Authenticate(model.EmailAddress); // Аутентификация
 
                     return Ok();
                 }
@@ -68,19 +74,21 @@ namespace AuthApp.Controllers
             return NotFound();
         }
 
+        // Метод аутентификации с помощью Cookies
         private async Task Authenticate(string userName)
         {
-            // создаем один claim
+            // Создаем один claim
             var claims = new List<Claim>
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, userName)
             };
-            // создаем объект ClaimsIdentity
+            // Создаем объект ClaimsIdentity
             ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
-            // установка аутентификационных куки
+            // Установка аутентификационных куки
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
 
+        // Метод выхода
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

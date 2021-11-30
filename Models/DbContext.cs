@@ -25,17 +25,30 @@ namespace VideoMessenger.Models
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<ChatParticipant>().HasKey(u => new { u.ChatId, u.UserId });
+            builder.Entity<ChatParticipant>().HasKey(u => new { u.ChatId, u.UserId }); // Внешний ключ
             builder.Entity<Friends>().HasKey(u => new { u.FriendId, u.UserId });
-            builder.Entity<User>().HasIndex(u => u.Login).IsUnique();
-            builder.Entity<User>().Property(u => u.Login).IsRequired();
+
+            builder.Entity<User>().HasIndex(u => u.Login).IsUnique(); // Унимкальность поля
+            builder.Entity<User>().Property(u => u.Login).IsRequired(); // атрибут NOT NULL
             builder.Entity<User>().HasIndex(u => u.PhoneNumber).IsUnique();
             builder.Entity<User>().Property(u => u.PhoneNumber).IsRequired();
             builder.Entity<User>().HasIndex(u => u.EmailAddress).IsUnique();
             builder.Entity<User>().Property(u => u.EmailAddress).IsRequired();
             builder.Entity<User>().Property(u => u.Password).IsRequired();
 
-            builder.Entity<Role>().HasData(
+            builder.Entity<ChatParticipant>().Property(u => u.ChatId).IsRequired();
+            builder.Entity<ChatParticipant>().Property(u => u.UserId).IsRequired();
+            builder.Entity<ChatParticipant>().Property(u => u.RoleId).IsRequired();
+
+            builder.Entity<Friends>().Property(u => u.UserId).IsRequired();
+            builder.Entity<Friends>().Property(u => u.FriendId).IsRequired();
+
+            builder.Entity<Role>().Property(u => u.Name).IsRequired();
+
+            builder.Entity<Message>().Property(u => u.SenderId).IsRequired();
+            builder.Entity<Message>().Property(u => u.ChatId).IsRequired();
+
+            builder.Entity<Role>().HasData( // Добавление тестовых данных в бд
                 new Role("creator", 1),
                 new Role("moderator", 2),
                 new Role("user", 3)
@@ -56,6 +69,12 @@ namespace VideoMessenger.Models
             builder.Entity<Chat>().HasData(
                 new Chat("RI-390003", DateTime.Now, -1),
                 new Chat("Gamers Room", DateTime.Now.AddDays(2), -2)
+                );
+
+            builder.Entity<Message>().HasData(
+                new Message() { Id = -1, SenderId = -1, ChatId= -1, Data="Hello, World!", CreationDate=DateTime.Now, IsReaded=false },
+                new Message() { Id = -2, SenderId = -2, ChatId= -2, Data="Good bye, World!", CreationDate=DateTime.Now.AddDays(2), IsReaded=true },
+                new Message() { Id = -3, SenderId = -3, ChatId= -2, Data="My life be like, uuuuaaaa", CreationDate=DateTime.Now.AddHours(3), IsReaded=false }
                 );
         }
     }
