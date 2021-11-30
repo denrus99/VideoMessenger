@@ -25,8 +25,8 @@ namespace VideoMessenger.Models
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<ChatParticipant>().HasKey(u => new { u.ChatId, u.UserId }); // Внешний ключ
-            builder.Entity<Friends>().HasKey(u => new { u.FriendId, u.UserId });
+            builder.Entity<ChatParticipant>().HasKey(u => new { u.ChatId, u.UserId }); // Составной ключ
+            builder.Entity<Friends>().HasKey(u => new { u.FriendId, u.UserId }); 
 
             builder.Entity<User>().HasIndex(u => u.Login).IsUnique(); // Унимкальность поля
             builder.Entity<User>().Property(u => u.Login).IsRequired(); // атрибут NOT NULL
@@ -47,6 +47,10 @@ namespace VideoMessenger.Models
 
             builder.Entity<Message>().Property(u => u.SenderId).IsRequired();
             builder.Entity<Message>().Property(u => u.ChatId).IsRequired();
+
+            builder.Entity<ChatInvitation>().Property(u => u.SenderId).IsRequired();
+            builder.Entity<ChatInvitation>().Property(u => u.RecipientId).IsRequired();
+            builder.Entity<ChatInvitation>().Property(u => u.ChatId).IsRequired();
 
             builder.Entity<Role>().HasData( // Добавление тестовых данных в бд
                 new Role("creator", 1),

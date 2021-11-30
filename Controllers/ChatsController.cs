@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using VideoMessenger.Models;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore;
 
 namespace VideoMessenger.Controllers
 {
@@ -24,8 +25,11 @@ namespace VideoMessenger.Controllers
 
         [Route("chats/{id:int}/messages")]
         public async Task<IActionResult> GetChatMessages(int id)
-        {
-            var messages = db.Messages.Where(m => m.Id == id).ToArray();
+        {       
+            var messages = await db.Messages.Include(m=>m.Chat)
+                                      .Include(m=>m.Sender)
+                                      .Where(m => m.Id == id)
+                                      .ToArrayAsync();
             var json = JsonSerializer.Serialize(messages);
             return Ok();
         }
