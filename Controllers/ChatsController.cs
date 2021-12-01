@@ -19,6 +19,7 @@ namespace VideoMessenger.Controllers
         {
             db = context;
         }
+
         public IActionResult Index()
         {
             return View();
@@ -43,25 +44,27 @@ namespace VideoMessenger.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    db.Chats.Add(new Chat(data.ChatName, DateTime.Now));
-                    var sender = await db.Users.Where(u => u.Login == data.SenderLogin).FirstAsync();
+                    var time = DateTime.Now;
+                    db.Chats.Add(new Chat(data.ChatName, time));
+                    await db.SaveChangesAsync();
+                    var sender = await db.Users.FirstOrDefaultAsync(u => u.Login == data.SenderLogin);
                     if (sender != null)
                     {
                         foreach (var login in data.RecipientLogins)
                         {
-                            var recipient = await db.Users.Where(u => u.Login == login).FirstAsync();
+                            var recipient = await db.Users.FirstOrDefaultAsync(u => u.Login == login);
                             if (recipient != null)
                             {
                                 db.ChatInvitations.Add(new ChatInvitation()
                                 {
                                     SenderId = sender.Id,
-                                    ChatId = db.Chats.OrderBy(x => x.CreationDate).Last().Id,
+                                    ChatId = db.Chats.FirstOrDefault(u => u.ChatName == data.ChatName && u.CreationDate == time).Id,
                                     RecipientId = recipient.Id,
                                     CreationDate = DateTime.Now
                                 });
                             }
                         }
-                        await db.SaveChangesAsync(); // Сохраняем бд
+                        await db.SaveChangesAsync();
                         return Ok();
                     }
                     return NotFound("The sender does not exist");
