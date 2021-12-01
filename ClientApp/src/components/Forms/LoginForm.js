@@ -4,7 +4,7 @@ import { Form, FormGroup, FormText, Input, Label, Button } from 'reactstrap';
 
 function LoginForm() {
   return (
-      <Form method="POST" action="account/login" asp-anti-forgery="false">
+      <Form method="POST" action="auth" asp-anti-forgery="false">
       <div class="validation" asp-validation-summary="ModelOnly"></div>
       <FormGroup>
         <Label for='EmailAddress'>Email address</Label>

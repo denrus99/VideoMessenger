@@ -15,6 +15,7 @@ namespace VideoMessenger.Models
         public DbSet<Friends> Friends { get; set; }
         public DbSet<Chat> Chats { get; set; }
         public DbSet<ChatParticipant> ChatParticipants { get; set; }
+        public DbSet<ChatInvitation> ChatInvitations { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Role> Roles { get; set; }
 

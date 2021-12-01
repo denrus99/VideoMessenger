@@ -22,6 +22,7 @@ namespace AuthApp.Controllers
 
         // Метод для авторизации пользователя
         [HttpPost]
+        [Route("/auth")]
         public async Task<IActionResult> Login(LoginModel model)
         {
             // Проверка данных из формы
@@ -32,46 +33,43 @@ namespace AuthApp.Controllers
                 if (user != null)
                 {
                     await Authenticate(model.EmailAddress); // Аутентификация
-                    return Ok();
+                    return Ok(user);
                 }
-
-                return NotFound();
+                return NotFound("The user does not exist");
             }
-            return NotFound();
+            return BadRequest(model);
         }
 
         // Метод регистрации нового пользователя
         [HttpPost]
+        [Route("/register")]
         public async Task<IActionResult> Register(RegisterModel model)
         {
             if (ModelState.IsValid)
             {
                 // Проверяем уникальность полей
-                var user = await db.Users.FirstOrDefaultAsync(u =>
-                u.EmailAddress == model.EmailAddress ||
-                u.Login == model.Login ||
-                u.PhoneNumber == model.PhoneNumber);
+                if (await db.Users.FirstOrDefaultAsync(u => u.EmailAddress == model.EmailAddress) != null)
+                    return NotFound("Email is already in use");
+                if (await db.Users.FirstOrDefaultAsync(u => u.Login == model.Login) != null)
+                    return NotFound("Login is already in use");
+                if (await db.Users.FirstOrDefaultAsync(u => u.PhoneNumber == model.PhoneNumber) != null)
+                    return NotFound("PhoneNumber is already in use");
 
-                if (user == null)
+                var user = new User()
                 {
-                    // Добавляем в базу данных
-                    db.Users.Add(new User
-                    {
-                        Login = model.Login,
-                        PhoneNumber = model.PhoneNumber,
-                        EmailAddress = model.EmailAddress,
-                        Password = model.Password
-                    });
-                    await db.SaveChangesAsync(); // Сохраняем бд
+                    Username = model.Login,
+                    Login = model.Login,
+                    PhoneNumber = model.PhoneNumber,
+                    EmailAddress = model.EmailAddress,
+                    Password = model.Password
+                };
 
-                    await Authenticate(model.EmailAddress); // Аутентификация
-
-                    return Ok();
-                }
-
-                return NotFound();
+                db.Users.Add(user); // Добавляем в базу данных
+                await db.SaveChangesAsync(); // Сохраняем бд
+                await Authenticate(model.EmailAddress); // Аутентификация
+                return Ok(user);
             }
-            return NotFound();
+            return BadRequest(model);
         }
 
         // Метод аутентификации с помощью Cookies

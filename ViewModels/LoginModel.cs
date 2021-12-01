@@ -7,7 +7,7 @@ namespace AuthApp.ViewModels
     public class LoginModel
     {
         [Required(ErrorMessage = "Не указан Email")]
-        [Remote(action: "ExistEmail", controller: "Validation", ErrorMessage = "Login уже занят")]
+        [Remote(action: "ExistEmail", controller: "Validation", ErrorMessage = "Email не существует")]
         public string EmailAddress { get; set; }
 
         [Required(ErrorMessage = "Не указан пароль")]

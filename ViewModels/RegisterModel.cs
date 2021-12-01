@@ -7,7 +7,7 @@ namespace AuthApp.ViewModels
     public class RegisterModel
     {
         [Required(ErrorMessage = "Не указан Login")]
-        //[Remote(action: "UniqueLogin", controller: "Validation", ErrorMessage = "Login уже занят")]
+        //[Remote(action: "UniqueLogin" controller: "Validation", ErrorMessage = "Login уже занят")]
         public string Login { get; set; }
 
         [Required(ErrorMessage = "Не указан Email")]
