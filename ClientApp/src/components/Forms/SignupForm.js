@@ -4,7 +4,7 @@ import { Form, FormGroup, FormText, Input, Label, Button } from 'reactstrap';
 
 function SignupForm() {
     return (
-      <Form method="POST" action="account/register" asp-anti-forgery="false">
+      <Form method="POST" action="register" asp-anti-forgery="false">
       <div class="validation" asp-validation-summary="ModelOnly"></div>
       <FormGroup>
         <Label name='Login'>Login</Label>

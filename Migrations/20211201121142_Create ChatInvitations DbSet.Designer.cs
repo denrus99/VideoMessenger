@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using VideoMessenger.Models;
@@ -9,9 +10,10 @@ using VideoMessenger.Models;
 namespace VideoMessenger.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20211201121142_Create ChatInvitations DbSet")]
+    partial class CreateChatInvitationsDbSet
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,13 +43,13 @@ namespace VideoMessenger.Migrations
                         {
                             Id = -1,
                             ChatName = "RI-390003",
-                            CreationDate = new DateTime(2021, 12, 1, 19, 26, 32, 425, DateTimeKind.Local).AddTicks(1288)
+                            CreationDate = new DateTime(2021, 12, 1, 17, 11, 42, 170, DateTimeKind.Local).AddTicks(6384)
                         },
                         new
                         {
                             Id = -2,
                             ChatName = "Gamers Room",
-                            CreationDate = new DateTime(2021, 12, 3, 19, 26, 32, 426, DateTimeKind.Local).AddTicks(5843)
+                            CreationDate = new DateTime(2021, 12, 3, 17, 11, 42, 171, DateTimeKind.Local).AddTicks(6579)
                         });
                 });
 
@@ -99,63 +101,6 @@ namespace VideoMessenger.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("ChatParticipants");
-
-                    b.HasData(
-                        new
-                        {
-                            ChatId = -1,
-                            UserId = -1,
-                            RoleId = 1
-                        },
-                        new
-                        {
-                            ChatId = -1,
-                            UserId = -2,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            ChatId = -2,
-                            UserId = -2,
-                            RoleId = 1
-                        },
-                        new
-                        {
-                            ChatId = -2,
-                            UserId = -3,
-                            RoleId = 1
-                        },
-                        new
-                        {
-                            ChatId = -1,
-                            UserId = -3,
-                            RoleId = 2
-                        });
-                });
-
-            modelBuilder.Entity("VideoMessenger.Models.FriendInvitation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("RecipientId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("SenderId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RecipientId");
-
-                    b.HasIndex("SenderId");
-
-                    b.ToTable("FriendInvitations");
                 });
 
             modelBuilder.Entity("VideoMessenger.Models.Friends", b =>
@@ -230,7 +175,7 @@ namespace VideoMessenger.Migrations
                         {
                             Id = -1,
                             ChatId = -1,
-                            CreationDate = new DateTime(2021, 12, 1, 19, 26, 32, 426, DateTimeKind.Local).AddTicks(8530),
+                            CreationDate = new DateTime(2021, 12, 1, 17, 11, 42, 171, DateTimeKind.Local).AddTicks(8486),
                             Data = "Hello, World!",
                             IsReaded = false,
                             SenderId = -1
@@ -239,7 +184,7 @@ namespace VideoMessenger.Migrations
                         {
                             Id = -2,
                             ChatId = -2,
-                            CreationDate = new DateTime(2021, 12, 3, 19, 26, 32, 426, DateTimeKind.Local).AddTicks(9552),
+                            CreationDate = new DateTime(2021, 12, 3, 17, 11, 42, 171, DateTimeKind.Local).AddTicks(9133),
                             Data = "Good bye, World!",
                             IsReaded = true,
                             SenderId = -2
@@ -248,7 +193,7 @@ namespace VideoMessenger.Migrations
                         {
                             Id = -3,
                             ChatId = -2,
-                            CreationDate = new DateTime(2021, 12, 1, 22, 26, 32, 426, DateTimeKind.Local).AddTicks(9568),
+                            CreationDate = new DateTime(2021, 12, 1, 20, 11, 42, 171, DateTimeKind.Local).AddTicks(9145),
                             Data = "My life be like, uuuuaaaa",
                             IsReaded = false,
                             SenderId = -3
@@ -409,25 +354,6 @@ namespace VideoMessenger.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("VideoMessenger.Models.FriendInvitation", b =>
-                {
-                    b.HasOne("VideoMessenger.Models.User", "Recipient")
-                        .WithMany()
-                        .HasForeignKey("RecipientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("VideoMessenger.Models.User", "Sender")
-                        .WithMany()
-                        .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Recipient");
-
-                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("VideoMessenger.Models.Friends", b =>

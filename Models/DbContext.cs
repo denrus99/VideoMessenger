@@ -13,8 +13,10 @@ namespace VideoMessenger.Models
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Friends> Friends { get; set; }
+        public DbSet<FriendInvitation> FriendInvitations { get; set; }
         public DbSet<Chat> Chats { get; set; }
         public DbSet<ChatParticipant> ChatParticipants { get; set; }
+        public DbSet<ChatInvitation> ChatInvitations { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Role> Roles { get; set; }
 
@@ -51,6 +53,9 @@ namespace VideoMessenger.Models
             builder.Entity<ChatInvitation>().Property(u => u.SenderId).IsRequired();
             builder.Entity<ChatInvitation>().Property(u => u.RecipientId).IsRequired();
             builder.Entity<ChatInvitation>().Property(u => u.ChatId).IsRequired();
+
+            builder.Entity<FriendInvitation>().Property(u => u.SenderId).IsRequired();
+            builder.Entity<FriendInvitation>().Property(u => u.RecipientId).IsRequired();
 
             builder.Entity<Role>().HasData( // Добавление тестовых данных в бд
                 new Role("creator", 1),
