@@ -8,6 +8,9 @@ using VideoMessenger.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using VideoMessenger.ViewModels;
+using System.Linq;
+using System.Text.Json;
 
 namespace AuthApp.Controllers
 {
@@ -93,6 +96,36 @@ namespace AuthApp.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return Ok();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Chats(int id)
+        {
+            if (await db.Users.FirstOrDefaultAsync(u => u.Id == id) == null)
+                return NotFound("The user does not exist");
+
+            var res = new List<ChatInformation>();
+            var userParticipations = await db.ChatParticipants.Include(o => o.Chat)
+                                           .Include(o => o.User)
+                                           .Include(o => o.Role)
+                                           .ToArrayAsync();
+
+            foreach (var participation in userParticipations)
+            {
+                var lastMessage = await db.Messages.OrderByDescending(m => m.CreationDate)
+                                                   .FirstAsync();
+                var info = new ChatInformation()
+                {
+                    ChatId = participation.ChatId,
+                    ChatName = participation.Chat.ChatName,
+                    LastMessage = lastMessage,
+                    Role = participation.Role
+                };
+                res.Add(info);
+            }
+
+            var json = JsonSerializer.Serialize(res);
+            return Ok(json);
         }
     }
 }

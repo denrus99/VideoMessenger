@@ -32,6 +32,6 @@ namespace VideoMessenger.Controllers
                                       .ToArrayAsync();
             var json = JsonSerializer.Serialize(messages);
             return Ok();
-        }
+        }       
     }
 }

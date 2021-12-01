@@ -80,6 +80,13 @@ namespace VideoMessenger.Models
                 new Message() { Id = -2, SenderId = -2, ChatId= -2, Data="Good bye, World!", CreationDate=DateTime.Now.AddDays(2), IsReaded=true },
                 new Message() { Id = -3, SenderId = -3, ChatId= -2, Data="My life be like, uuuuaaaa", CreationDate=DateTime.Now.AddHours(3), IsReaded=false }
                 );
+            builder.Entity<ChatParticipant>().HasData(
+                new ChatParticipant(-1, -1, 1),
+                new ChatParticipant(-2, -1, 2),
+                new ChatParticipant(-2, -2, 1),
+                new ChatParticipant(-3, -2, 1),
+                new ChatParticipant(-3, -1, 2)
+                );
         }
     }
 }
