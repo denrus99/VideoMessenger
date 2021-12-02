@@ -11,7 +11,7 @@ function Layout(props) {
   
   return (
     <>
-      <header>
+      {/* <header>
         <Navbar color="dark" expand='sm' dark>
           <NavLink exact to='/' className='navbar-brand nav-link'>ZHOPA</NavLink>
           <NavbarToggler onClick={toggler} />
@@ -40,11 +40,11 @@ function Layout(props) {
             </Nav>
           </Collapse>
         </Navbar>
-      </header>
+      </header> */}
       <main>{props.children}</main>
-      <footer className='bg-dark text-white text-center'>
+      {/* <footer className='bg-dark text-white text-center'>
         Copyright &copy; 2021 by Maxim, Alexander, Alexander, Ivan, Denis. All rights reserved.
-      </footer>
+      </footer> */}
     </>
   );
 }

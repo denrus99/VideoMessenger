@@ -12,33 +12,37 @@ code {
     monospace;
 }
 
+body, html {
+  height: 100%;
+  width: 100%;
+}
+
 #root {
-  height: 100vh;
+  height: 100%;
+  min-width: 800px;
   display: flex;
   flex-direction: column;
+  
+  background: conic-gradient(
+    from 180deg at 50% 50%, 
+    rgba(0, 153, 153, 0.5) 0deg, 
+    rgba(145, 166, 70, 0.5) 136.88deg, 
+    rgba(0, 153, 153, 0.5) 360deg);
 }
 
-/* width */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 5px;
 }
 
-::-webkit-scrollbar-corner {
-  background: red;
-}
-
-/* Track */
 ::-webkit-scrollbar-track {
-  background: #181e25;
+  background-color: transparent;
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
-  background-color: #181e25;
+  background-color: transparent;
   border-radius: 10px;
 }
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background-color: #555;
+::-webkit-scrollbar-thumb:hover {  
+  background-color: var(--bs-gray);
 }

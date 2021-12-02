@@ -20,7 +20,10 @@ const UserIcon = ({ color }) => {
 const ChatContent = ({ fromUser, textMessage }) => {
   return (
     <div className={cs.chatContent}>
-      <div className={cs.chatName}>{fromUser}</div>
+      <div className={cs.chatHeader}>
+        <div className={cs.chatName}>{fromUser}</div>
+        <div className={cs.chatTime}>00:00</div>
+      </div>
       <div className={cs.textMessage}>{textMessage}</div>
     </div>
   );

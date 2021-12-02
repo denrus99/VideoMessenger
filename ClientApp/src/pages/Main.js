@@ -3,9 +3,10 @@ import Sidebar from '../components/Sidebar/Sidebar';
 
 import EmptyScreen from '../components/Screens/EmptyScreens/EmptyScreen'
 import ChatScreen from '../components/Screens/ChatScreen/ChatScreen';
+import VideoScreen from '../components/Screens/VideoScreen/VideoScreen';
 
 
-function Main() {
+function Main(props) {
   const chats = [
     {
       user: {
@@ -19,7 +20,7 @@ function Main() {
         name: 'Vanya',
         avatar: 'midnightblue',
       },
-      text: 'Sheeeeeeeeeeeeeeeeeeeesh',
+      text: 'Sheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeesh',
     },
     {
       user: {
@@ -110,7 +111,9 @@ function Main() {
   return (
     <>
       <Sidebar chats={chats} />
-      <ChatScreen />
+      {props.children}
+      {/* <VideoScreen /> */}
+      {/* <ChatScreen /> */}
     </>
   );
 }

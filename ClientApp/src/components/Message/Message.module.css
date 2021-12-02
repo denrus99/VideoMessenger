@@ -5,10 +5,10 @@
 
 .messageText {
     max-width: 50vw;
+
     font-size: 14px;
     padding: 5px 10px;
-    border-radius: 5px;
+    border-radius: 10px;
     word-wrap: break-word;
-    color: white;
-    background-color: #6c757d;
+    background-color: white;
 }

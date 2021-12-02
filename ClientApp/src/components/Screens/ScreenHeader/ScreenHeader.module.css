@@ -1,0 +1,44 @@
+.chatScreenHeader {
+    height: 80px;
+    display: flex;
+    align-items: center;
+
+    background-color: var(--bs-gray-300);
+}
+
+.chatIcon {
+    height: 50px;
+    width: 50px;
+
+    margin: 10px;
+    border-radius: 50px;
+    border: 1px solid black;
+
+    background-color: darkgoldenrod;
+}
+
+.chatName {
+    /* padding: 10px; */
+    margin-right: auto;
+
+    font-size: 24px;
+    font-weight: bold;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.btn {
+    height: 80px;
+    width: 80px;
+    
+    padding: 0;
+    border: 0;
+
+    background-color: transparent;
+    font-size: 24px;
+}
+
+.btn:hover {
+    background-color: var(--bs-gray-400);
+}

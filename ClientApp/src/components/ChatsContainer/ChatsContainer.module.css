@@ -1,11 +1,9 @@
 .chatsContainer {
+    max-height: calc(100vh - 80px);
+    width: 360px;
+
     display: flex;
     flex-direction: column;
 
-    width: 270px;
-    overflow-y: auto;
-    min-height: 517px;
-    max-height: calc(100vh - 150px);
-
-    border-top: 1px solid white;
+    overflow-y: overlay;
 }
