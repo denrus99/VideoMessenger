@@ -102,26 +102,32 @@ namespace AuthApp.Controllers
             if (await db.Users.FirstOrDefaultAsync(u => u.Id == id) == null)
                 return NotFound("The user does not exist");
 
-            var res = new List<ChatInformation>();
+            var res = new List<object>();
             var userParticipations = await db.ChatParticipants.Include(o => o.Chat)
                                            .Include(o => o.User)
                                            .Include(o => o.Role)
+                                           .Where(o=>o.UserId == id)
                                            .ToArrayAsync();
 
             foreach (var participation in userParticipations)
             {
-                var lastMessage = await db.Messages.OrderByDescending(m => m.CreationDate)
+                var lastMessage = await db.Messages.OrderByDescending(m => m.CreationDate)                    
                                                    .FirstAsync();
-                var info = new ChatInformation()
+                var info = new
                 {
                     ChatId = participation.ChatId,
                     ChatName = participation.Chat.ChatName,
-                    LastMessage = lastMessage,
+                    LastMessage = new 
+                        { Data = lastMessage.Data, 
+                        Sender = lastMessage.SenderId,
+                        IsReaded = lastMessage.IsReaded, 
+                        CreationDate = lastMessage.CreationDate
+                    },
                     Role = participation.Role
                 };
                 res.Add(info);
             }
-
+            
             var json = JsonSerializer.Serialize(res);
             return Ok(json);
         }

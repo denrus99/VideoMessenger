@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using VideoMessenger.Models;
@@ -9,9 +10,10 @@ using VideoMessenger.Models;
 namespace VideoMessenger.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20211201152422_Fix date time")]
+    partial class Fixdatetime
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -99,38 +101,6 @@ namespace VideoMessenger.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("ChatParticipants");
-
-                    b.HasData(
-                        new
-                        {
-                            ChatId = -1,
-                            UserId = -1,
-                            RoleId = 1
-                        },
-                        new
-                        {
-                            ChatId = -1,
-                            UserId = -2,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            ChatId = -2,
-                            UserId = -2,
-                            RoleId = 1
-                        },
-                        new
-                        {
-                            ChatId = -2,
-                            UserId = -3,
-                            RoleId = 1
-                        },
-                        new
-                        {
-                            ChatId = -1,
-                            UserId = -3,
-                            RoleId = 2
-                        });
                 });
 
             modelBuilder.Entity("VideoMessenger.Models.FriendInvitation", b =>

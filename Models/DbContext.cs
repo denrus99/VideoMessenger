@@ -76,14 +76,14 @@ namespace VideoMessenger.Models
                 );
 
             builder.Entity<Chat>().HasData(
-                new Chat("RI-390003", DateTime.Now, -1),
-                new Chat("Gamers Room", DateTime.Now.AddDays(2), -2)
+                new Chat("RI-390003", new DateTime(2021, 12, 1, 20, 16, 11, 191, DateTimeKind.Local).AddTicks(4330), -1),
+                new Chat("Gamers Room", new DateTime(2021, 12, 2, 20, 16, 11, 191, DateTimeKind.Local).AddTicks(4330), -2)
                 );
 
             builder.Entity<Message>().HasData(
-                new Message() { Id = -1, SenderId = -1, ChatId= -1, Data="Hello, World!", CreationDate=DateTime.Now, IsReaded=false },
-                new Message() { Id = -2, SenderId = -2, ChatId= -2, Data="Good bye, World!", CreationDate=DateTime.Now.AddDays(2), IsReaded=true },
-                new Message() { Id = -3, SenderId = -3, ChatId= -2, Data="My life be like, uuuuaaaa", CreationDate=DateTime.Now.AddHours(3), IsReaded=false }
+                new Message() { Id = -1, SenderId = -1, ChatId= -1, Data="Hello, World!", CreationDate= new DateTime(2021, 12, 1, 20, 16, 11, 191, DateTimeKind.Local).AddTicks(4330), IsReaded =false },
+                new Message() { Id = -2, SenderId = -2, ChatId= -2, Data="Good bye, World!", CreationDate= new DateTime(2021, 11, 2, 21, 16, 11, 191, DateTimeKind.Local).AddTicks(4330), IsReaded =true },
+                new Message() { Id = -3, SenderId = -3, ChatId= -2, Data="My life be like, uuuuaaaa", CreationDate= new DateTime(2021, 10, 3, 20, 16, 11, 191, DateTimeKind.Local).AddTicks(4330), IsReaded =false }
                 );
             builder.Entity<ChatParticipant>().HasData(
                 new ChatParticipant(-1, -1, 1),

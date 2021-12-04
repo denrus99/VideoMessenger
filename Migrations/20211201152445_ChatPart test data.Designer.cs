@@ -10,8 +10,8 @@ using VideoMessenger.Models;
 namespace VideoMessenger.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20211201150458_ChatParticipant test Data")]
-    partial class ChatParticipanttestData
+    [Migration("20211201152445_ChatPart test data")]
+    partial class ChatParttestdata
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -43,13 +43,13 @@ namespace VideoMessenger.Migrations
                         {
                             Id = -1,
                             ChatName = "RI-390003",
-                            CreationDate = new DateTime(2021, 12, 1, 20, 4, 58, 269, DateTimeKind.Local).AddTicks(2952)
+                            CreationDate = new DateTime(2021, 12, 1, 20, 16, 11, 191, DateTimeKind.Local).AddTicks(4330)
                         },
                         new
                         {
                             Id = -2,
                             ChatName = "Gamers Room",
-                            CreationDate = new DateTime(2021, 12, 3, 20, 4, 58, 270, DateTimeKind.Local).AddTicks(9470)
+                            CreationDate = new DateTime(2021, 12, 2, 20, 16, 11, 191, DateTimeKind.Local).AddTicks(4330)
                         });
                 });
 
@@ -80,7 +80,7 @@ namespace VideoMessenger.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("ChatInvitation");
+                    b.ToTable("ChatInvitations");
                 });
 
             modelBuilder.Entity("VideoMessenger.Models.ChatParticipant", b =>
@@ -133,6 +133,31 @@ namespace VideoMessenger.Migrations
                             UserId = -3,
                             RoleId = 2
                         });
+                });
+
+            modelBuilder.Entity("VideoMessenger.Models.FriendInvitation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("RecipientId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SenderId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RecipientId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("FriendInvitations");
                 });
 
             modelBuilder.Entity("VideoMessenger.Models.Friends", b =>
@@ -207,7 +232,7 @@ namespace VideoMessenger.Migrations
                         {
                             Id = -1,
                             ChatId = -1,
-                            CreationDate = new DateTime(2021, 12, 1, 20, 4, 58, 271, DateTimeKind.Local).AddTicks(1612),
+                            CreationDate = new DateTime(2021, 12, 1, 20, 16, 11, 191, DateTimeKind.Local).AddTicks(4330),
                             Data = "Hello, World!",
                             IsReaded = false,
                             SenderId = -1
@@ -216,7 +241,7 @@ namespace VideoMessenger.Migrations
                         {
                             Id = -2,
                             ChatId = -2,
-                            CreationDate = new DateTime(2021, 12, 3, 20, 4, 58, 271, DateTimeKind.Local).AddTicks(2162),
+                            CreationDate = new DateTime(2021, 11, 2, 21, 16, 11, 191, DateTimeKind.Local).AddTicks(4330),
                             Data = "Good bye, World!",
                             IsReaded = true,
                             SenderId = -2
@@ -225,7 +250,7 @@ namespace VideoMessenger.Migrations
                         {
                             Id = -3,
                             ChatId = -2,
-                            CreationDate = new DateTime(2021, 12, 1, 23, 4, 58, 271, DateTimeKind.Local).AddTicks(2176),
+                            CreationDate = new DateTime(2021, 10, 3, 20, 16, 11, 191, DateTimeKind.Local).AddTicks(4330),
                             Data = "My life be like, uuuuaaaa",
                             IsReaded = false,
                             SenderId = -3
@@ -386,6 +411,25 @@ namespace VideoMessenger.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("VideoMessenger.Models.FriendInvitation", b =>
+                {
+                    b.HasOne("VideoMessenger.Models.User", "Recipient")
+                        .WithMany()
+                        .HasForeignKey("RecipientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("VideoMessenger.Models.User", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Recipient");
+
+                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("VideoMessenger.Models.Friends", b =>
