@@ -131,5 +131,17 @@ namespace AuthApp.Controllers
             var json = JsonSerializer.Serialize(res);
             return Ok(json);
         }
+
+        [HttpGet]
+        [Route("account/{login}")]
+        public async Task<IActionResult> User(string login)
+        {
+            var user = await db.Users.Where(u => u.Login == login).FirstOrDefaultAsync();
+
+            if (user == null)
+                return NotFound("The user does not exist");
+
+            return Ok(new UserInfo(user).ToJson());
+        }
     }
 }
