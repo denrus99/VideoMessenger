@@ -97,16 +97,17 @@ namespace AuthApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Chats(int id)
+        [Route("account/{login}/chats")]
+        public async Task<IActionResult> Chats(string login)
         {
-            if (await db.Users.FirstOrDefaultAsync(u => u.Id == id) == null)
+            if (await db.Users.FirstOrDefaultAsync(u => u.Login == login) == null)
                 return NotFound("The user does not exist");
 
             var res = new List<object>();
             var userParticipations = await db.ChatParticipants.Include(o => o.Chat)
                                            .Include(o => o.User)
                                            .Include(o => o.Role)
-                                           .Where(o=>o.UserId == id)
+                                           .Where(o=>o.User.Login == login)
                                            .ToArrayAsync();
 
             foreach (var participation in userParticipations)
