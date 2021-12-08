@@ -25,6 +25,7 @@ namespace VideoMessenger.Controllers
             return View();
         }
 
+        [HttpGet]
         [Route("chats/{id:int}/messages")]
         public async Task<IActionResult> GetChatMessages(int id)
         {       
@@ -36,8 +37,8 @@ namespace VideoMessenger.Controllers
             return Ok(json);
         }
 
-        [Route("chats/")]
         [HttpPut]
+        [Route("chats/")]
         public async Task<IActionResult> CreateChat([FromBody] ChatCreationData data)
         {
             if (data != null)
