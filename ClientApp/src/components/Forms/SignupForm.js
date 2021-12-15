@@ -3,20 +3,28 @@ import { Form, FormGroup, FormText, Input, Label, Button } from 'reactstrap';
 
 
 function SignupForm() {
-  return (
-    <Form>
+    return (
+      <Form method="POST" action="register" asp-anti-forgery="false">
+      <div class="validation" asp-validation-summary="ModelOnly"></div>
       <FormGroup>
-        <Label for='exampleInputUsername'>Username</Label>
-        <Input id='exampleInputUsername' type='text'/>
+        <Label name='Login'>Login</Label>
+        <Input id='Login' type='text' name="Login" />
+        <FormText>We'll never share your login with anyone else.</FormText>
+        <span asp-validation-for="Login" />
       </FormGroup>
       <FormGroup>
-        <Label for='exampleInputEmail'>Email address</Label>
-        <Input id='exampleInputEmail' type='email'/>
+         <Label name='PhoneNumber'>PhoneNumber</Label>
+         <Input id='PhoneNumber' type='text' name="PhoneNumber" />
+         <FormText>We'll never share your PhoneNumber with anyone else.</FormText>
+      </FormGroup>
+      <FormGroup>
+        <Label for='EmailAddress'>Email address</Label>
+        <Input id='EmailAddress' type='email' name="EmailAddress"/>
         <FormText>We'll never share your email with anyone else.</FormText>
       </FormGroup>
       <FormGroup>
-        <Label for='exampleInputPassword'>Password</Label>
-        <Input id='exampleInputPassword' type='password'/>
+        <Label for='Password'>Password</Label>
+        <Input id='Password' type='password' name="Password"/>
       </FormGroup>
       <FormGroup check>
         <Input id='exampleCheck' type='checkbox'/>

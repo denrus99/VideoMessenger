@@ -12,5 +12,11 @@ namespace VideoMessenger.Models
 
         public int FriendId { get; set; }
         public User Friend { get; set; }
+
+        public Friends(int userId, int friendId)
+        {
+            UserId = userId;
+            FriendId = friendId;
+        }
     }
 }

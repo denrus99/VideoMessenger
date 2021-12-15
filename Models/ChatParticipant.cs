@@ -14,5 +14,12 @@ namespace VideoMessenger.Models
         public Chat Chat { get; set; }
         public int RoleId { get; set; }
         public Role Role { get; set; }
+
+        public ChatParticipant(int userId, int chatId, int roleId)
+        {
+            UserId = userId;
+            ChatId = chatId;
+            RoleId = roleId;
+        }
     }
 }

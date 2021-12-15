@@ -13,7 +13,7 @@ function Layout(props) {
     <>
       <header>
         <Navbar color="dark" expand='sm' dark>
-          <NavLink exact to='/' className='navbar-brand nav-link'>ZHOPA</NavLink>
+          <NavLink exact to='/' className='navbar-brand nav-link'>LOGO</NavLink>
           <NavbarToggler onClick={toggler} />
           <Collapse navbar isOpen={isOpen} className='justify-content-between'>
             <Nav navbar>

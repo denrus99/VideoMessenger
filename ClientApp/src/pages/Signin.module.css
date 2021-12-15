@@ -1,0 +1,112 @@
+.authScreen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.authForm {
+    background: #FFF;
+    border-radius: 90px;
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    height: 400px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border: black solid 2px;
+}
+
+.signinTabs {
+    background: transparent;
+    display: flex;
+    border-bottom: black solid 2px;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.signinTabs button {
+    background: transparent;
+    border: none;
+    flex-grow: 1;
+    height: 50px;
+    border-radius: 50px;
+    font-size: 34px;
+    padding-bottom: 5px;
+    text-align: center;
+}
+
+/*.activeTab {*/
+/*    clip-path: polygon(0px 208px, 146.5px 207px, 147px 141.2px, ...);*/
+/*}*/
+
+.signupForm {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 100%;
+    float: left;
+}
+
+.signupForm button {
+    background: #FFFFFF;
+    border: 1px solid #000000;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 60px;
+    width: 210px;
+    height: 40px;
+    font-size: 24px;
+    padding: 0;
+}
+
+.loginForm {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 100%;
+    float: left;
+}
+
+.loginForm button {
+    background: #FFFFFF;
+    border: 1px solid #000000;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 60px;
+    width: 210px;
+    height: 40px;
+    font-size: 24px;
+    padding: 0;
+}
+
+.signinInput {
+    width: 250px;
+    height: 40px;
+    border: 1px solid #000000;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 60px;
+    padding: 10px;
+}
+
+.signinLabel {
+
+}
+
+.complexInput {
+    /*display: flex;*/
+    /*justify-content: space-evenly;*/
+    /*align-items: center;*/
+    width: 100%;
+    font-size: 32px;
+    clear: both;
+    text-align: right;
+    padding: 10px;
+}
+
+.complexInput label {
+    float: left;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
