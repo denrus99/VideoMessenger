@@ -25,6 +25,31 @@ namespace VideoMessenger.Controllers
             return View();
         }
 
+        [HttpPut]
+        [Route("/chat/accept")]
+        /* Метод принятия в чат */
+        public async Task<IActionResult> AcceptChatInvitation([FromBody] ChatInvitationData data)
+        {
+            if (data != null)
+            {
+                if (ModelState.IsValid)
+                {
+                    var invitation = await db.ChatInvitations.Where(x => x.Recipient.Login == data.RecipientLogin && x.ChatId == data.ChatId).FirstAsync();
+                    if (invitation != null)
+                    {
+                        db.ChatParticipants.Add(new ChatParticipant(invitation.RecipientId, invitation.ChatId, 3));
+                        db.ChatInvitations.Remove(invitation);
+
+                        await db.SaveChangesAsync(); // Сохраняем бд
+                        return Ok();
+                    }
+
+                    return NotFound("The invitation does not exist");
+                }
+            }
+            return BadRequest(data);
+        }
+
         [HttpGet]
         [Route("chats/{id:int}/messages")]
         public async Task<IActionResult> GetChatMessages(int id)
@@ -46,26 +71,28 @@ namespace VideoMessenger.Controllers
                 if (ModelState.IsValid)
                 {
                     var time = DateTime.Now;
-                    db.Chats.Add(new Chat(data.ChatName, time));
+                    db.Chats.Add(new Chat(data.ChatName, time)); // Создаем новый чат
                     await db.SaveChangesAsync();
-                    var sender = await db.Users.FirstOrDefaultAsync(u => u.Login == data.SenderLogin);
+                    var sender = await db.Users.FirstOrDefaultAsync(u => u.Login == data.SenderLogin); // Ищем отправителя
                     if (sender != null)
                     {
+                        var chatId = db.Chats.FirstOrDefault(u => u.ChatName == data.ChatName && u.CreationDate == time).Id; // Ищем чат в бд и берем Id
+                        db.ChatParticipants.Add(new ChatParticipant(sender.Id, chatId, 1)); // Добавлчем отправителя в чат
                         foreach (var login in data.RecipientLogins)
                         {
-                            var recipient = await db.Users.FirstOrDefaultAsync(u => u.Login == login);
+                            var recipient = await db.Users.FirstOrDefaultAsync(u => u.Login == login); // Ищем пользователя в бд
                             if (recipient != null)
                             {
-                                db.ChatInvitations.Add(new ChatInvitation()
+                                db.ChatInvitations.Add(new ChatInvitation() // Создаем новый инвайт
                                 {
                                     SenderId = sender.Id,
-                                    ChatId = db.Chats.FirstOrDefault(u => u.ChatName == data.ChatName && u.CreationDate == time).Id,
+                                    ChatId = chatId,
                                     RecipientId = recipient.Id,
                                     CreationDate = DateTime.Now
                                 });
                             }
                         }
-                        await db.SaveChangesAsync();
+                        await db.SaveChangesAsync(); // Сохраняем базу данных
                         return Ok();
                     }
                     return NotFound("The sender does not exist");

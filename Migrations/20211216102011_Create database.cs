@@ -28,7 +28,7 @@ namespace VideoMessenger.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: true)
+                    Name = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -50,6 +50,40 @@ namespace VideoMessenger.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ChatInvitations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    SenderId = table.Column<int>(type: "integer", nullable: false),
+                    ChatId = table.Column<int>(type: "integer", nullable: false),
+                    RecipientId = table.Column<int>(type: "integer", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChatInvitations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ChatInvitations_Chats_ChatId",
+                        column: x => x.ChatId,
+                        principalTable: "Chats",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ChatInvitations_Users_RecipientId",
+                        column: x => x.RecipientId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ChatInvitations_Users_SenderId",
+                        column: x => x.SenderId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -78,6 +112,33 @@ namespace VideoMessenger.Migrations
                     table.ForeignKey(
                         name: "FK_ChatParticipants_Users_UserId",
                         column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FriendInvitations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    SenderId = table.Column<int>(type: "integer", nullable: false),
+                    RecipientId = table.Column<int>(type: "integer", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FriendInvitations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FriendInvitations_Users_RecipientId",
+                        column: x => x.RecipientId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FriendInvitations_Users_SenderId",
+                        column: x => x.SenderId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -136,6 +197,92 @@ namespace VideoMessenger.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Chats",
+                columns: new[] { "Id", "ChatName", "CreationDate" },
+                values: new object[,]
+                {
+                    { -1, "RI-390003", new DateTime(2021, 12, 16, 13, 16, 0, 0, DateTimeKind.Local) },
+                    { -2, "Gamers Room", new DateTime(2021, 12, 2, 20, 16, 11, 191, DateTimeKind.Local) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "creator" },
+                    { 2, "moderator" },
+                    { 3, "user" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "EmailAddress", "Login", "Password", "PhoneNumber", "Username" },
+                values: new object[,]
+                {
+                    { -1, "vasya322@ya.ru", "Pupok", "ahc4ahlv4lt", "+78222345678", "Vasya" },
+                    { -2, "igor2005@ya.ru", "Uxo", "aklovfaoper", "+79221234564", "Igor" },
+                    { -3, "sodeep@ya.ru", "Poland", "12345", "+78921234567", "Masha" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ChatParticipants",
+                columns: new[] { "ChatId", "UserId", "RoleId" },
+                values: new object[,]
+                {
+                    { -1, -1, 1 },
+                    { -2, -1, 2 },
+                    { -1, -2, 2 },
+                    { -2, -2, 1 },
+                    { -1, -3, 3 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Friends",
+                columns: new[] { "FriendId", "UserId" },
+                values: new object[,]
+                {
+                    { -1, -3 },
+                    { -3, -1 },
+                    { -2, -1 },
+                    { -1, -2 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Messages",
+                columns: new[] { "Id", "ChatId", "CreationDate", "Data", "IsReaded", "SenderId" },
+                values: new object[,]
+                {
+                    { -7, -1, new DateTime(2021, 12, 16, 13, 16, 30, 191, DateTimeKind.Local), "У меня вообще тройка, не стоит отчаиваться", true, -3 },
+                    { -3, -1, new DateTime(2021, 12, 16, 13, 16, 14, 191, DateTimeKind.Local), "Отлично! Как у тебя?", true, -3 },
+                    { -11, -2, new DateTime(2021, 12, 2, 20, 16, 11, 191, DateTimeKind.Local), "Good bye, World!", true, -2 },
+                    { -2, -1, new DateTime(2021, 12, 16, 13, 16, 12, 191, DateTimeKind.Local), "Привет, нормально", true, -2 },
+                    { -5, -1, new DateTime(2021, 12, 16, 13, 16, 20, 191, DateTimeKind.Local), "Что случилось?", true, -2 },
+                    { -9, -1, new DateTime(2021, 12, 16, 13, 16, 36, 191, DateTimeKind.Local), "Приезжайте ко мне, будем в шашки играть", true, -3 },
+                    { -10, -1, new DateTime(2021, 12, 1, 13, 16, 38, 191, DateTimeKind.Local), "Выезжаю...", false, -1 },
+                    { -6, -1, new DateTime(2021, 12, 16, 13, 16, 25, 191, DateTimeKind.Local), "Получил 4 по алгебре", true, -1 },
+                    { -4, -1, new DateTime(2021, 12, 16, 13, 16, 16, 191, DateTimeKind.Local), "Могло быть и лучше", true, -1 },
+                    { -1, -1, new DateTime(2021, 12, 16, 13, 16, 10, 191, DateTimeKind.Local), "Привет, как у вас дела?", true, -1 },
+                    { -8, -1, new DateTime(2021, 12, 16, 13, 16, 35, 191, DateTimeKind.Local), "Нормально все будет", true, -2 },
+                    { -12, -2, new DateTime(2021, 12, 2, 21, 16, 11, 191, DateTimeKind.Local), "My life be like, uuuuaaaa", false, -3 }
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChatInvitations_ChatId",
+                table: "ChatInvitations",
+                column: "ChatId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChatInvitations_RecipientId",
+                table: "ChatInvitations",
+                column: "RecipientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChatInvitations_SenderId",
+                table: "ChatInvitations",
+                column: "SenderId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_ChatParticipants_RoleId",
                 table: "ChatParticipants",
@@ -145,6 +292,16 @@ namespace VideoMessenger.Migrations
                 name: "IX_ChatParticipants_UserId",
                 table: "ChatParticipants",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FriendInvitations_RecipientId",
+                table: "FriendInvitations",
+                column: "RecipientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FriendInvitations_SenderId",
+                table: "FriendInvitations",
+                column: "SenderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Friends_UserId",
@@ -183,7 +340,13 @@ namespace VideoMessenger.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ChatInvitations");
+
+            migrationBuilder.DropTable(
                 name: "ChatParticipants");
+
+            migrationBuilder.DropTable(
+                name: "FriendInvitations");
 
             migrationBuilder.DropTable(
                 name: "Friends");

@@ -41,13 +41,13 @@ namespace VideoMessenger.Migrations
                         {
                             Id = -1,
                             ChatName = "RI-390003",
-                            CreationDate = new DateTime(2021, 12, 1, 20, 16, 11, 191, DateTimeKind.Local).AddTicks(4330)
+                            CreationDate = new DateTime(2021, 12, 16, 13, 16, 0, 0, DateTimeKind.Local)
                         },
                         new
                         {
                             Id = -2,
                             ChatName = "Gamers Room",
-                            CreationDate = new DateTime(2021, 12, 2, 20, 16, 11, 191, DateTimeKind.Local).AddTicks(4330)
+                            CreationDate = new DateTime(2021, 12, 2, 20, 16, 11, 191, DateTimeKind.Local)
                         });
                 });
 
@@ -115,6 +115,12 @@ namespace VideoMessenger.Migrations
                         },
                         new
                         {
+                            ChatId = -1,
+                            UserId = -3,
+                            RoleId = 3
+                        },
+                        new
+                        {
                             ChatId = -2,
                             UserId = -2,
                             RoleId = 1
@@ -122,13 +128,7 @@ namespace VideoMessenger.Migrations
                         new
                         {
                             ChatId = -2,
-                            UserId = -3,
-                            RoleId = 1
-                        },
-                        new
-                        {
-                            ChatId = -1,
-                            UserId = -3,
+                            UserId = -1,
                             RoleId = 2
                         });
                 });
@@ -230,25 +230,106 @@ namespace VideoMessenger.Migrations
                         {
                             Id = -1,
                             ChatId = -1,
-                            CreationDate = new DateTime(2021, 12, 1, 20, 16, 11, 191, DateTimeKind.Local).AddTicks(4330),
-                            Data = "Hello, World!",
-                            IsReaded = false,
+                            CreationDate = new DateTime(2021, 12, 16, 13, 16, 10, 191, DateTimeKind.Local),
+                            Data = "Привет, как у вас дела?",
+                            IsReaded = true,
                             SenderId = -1
                         },
                         new
                         {
                             Id = -2,
-                            ChatId = -2,
-                            CreationDate = new DateTime(2021, 11, 2, 21, 16, 11, 191, DateTimeKind.Local).AddTicks(4330),
-                            Data = "Good bye, World!",
+                            ChatId = -1,
+                            CreationDate = new DateTime(2021, 12, 16, 13, 16, 12, 191, DateTimeKind.Local),
+                            Data = "Привет, нормально",
                             IsReaded = true,
                             SenderId = -2
                         },
                         new
                         {
                             Id = -3,
+                            ChatId = -1,
+                            CreationDate = new DateTime(2021, 12, 16, 13, 16, 14, 191, DateTimeKind.Local),
+                            Data = "Отлично! Как у тебя?",
+                            IsReaded = true,
+                            SenderId = -3
+                        },
+                        new
+                        {
+                            Id = -4,
+                            ChatId = -1,
+                            CreationDate = new DateTime(2021, 12, 16, 13, 16, 16, 191, DateTimeKind.Local),
+                            Data = "Могло быть и лучше",
+                            IsReaded = true,
+                            SenderId = -1
+                        },
+                        new
+                        {
+                            Id = -5,
+                            ChatId = -1,
+                            CreationDate = new DateTime(2021, 12, 16, 13, 16, 20, 191, DateTimeKind.Local),
+                            Data = "Что случилось?",
+                            IsReaded = true,
+                            SenderId = -2
+                        },
+                        new
+                        {
+                            Id = -6,
+                            ChatId = -1,
+                            CreationDate = new DateTime(2021, 12, 16, 13, 16, 25, 191, DateTimeKind.Local),
+                            Data = "Получил 4 по алгебре",
+                            IsReaded = true,
+                            SenderId = -1
+                        },
+                        new
+                        {
+                            Id = -7,
+                            ChatId = -1,
+                            CreationDate = new DateTime(2021, 12, 16, 13, 16, 30, 191, DateTimeKind.Local),
+                            Data = "У меня вообще тройка, не стоит отчаиваться",
+                            IsReaded = true,
+                            SenderId = -3
+                        },
+                        new
+                        {
+                            Id = -8,
+                            ChatId = -1,
+                            CreationDate = new DateTime(2021, 12, 16, 13, 16, 35, 191, DateTimeKind.Local),
+                            Data = "Нормально все будет",
+                            IsReaded = true,
+                            SenderId = -2
+                        },
+                        new
+                        {
+                            Id = -9,
+                            ChatId = -1,
+                            CreationDate = new DateTime(2021, 12, 16, 13, 16, 36, 191, DateTimeKind.Local),
+                            Data = "Приезжайте ко мне, будем в шашки играть",
+                            IsReaded = true,
+                            SenderId = -3
+                        },
+                        new
+                        {
+                            Id = -10,
+                            ChatId = -1,
+                            CreationDate = new DateTime(2021, 12, 1, 13, 16, 38, 191, DateTimeKind.Local),
+                            Data = "Выезжаю...",
+                            IsReaded = false,
+                            SenderId = -1
+                        },
+                        new
+                        {
+                            Id = -11,
                             ChatId = -2,
-                            CreationDate = new DateTime(2021, 10, 3, 20, 16, 11, 191, DateTimeKind.Local).AddTicks(4330),
+                            CreationDate = new DateTime(2021, 12, 2, 20, 16, 11, 191, DateTimeKind.Local),
+                            Data = "Good bye, World!",
+                            IsReaded = true,
+                            SenderId = -2
+                        },
+                        new
+                        {
+                            Id = -12,
+                            ChatId = -2,
+                            CreationDate = new DateTime(2021, 12, 2, 21, 16, 11, 191, DateTimeKind.Local),
                             Data = "My life be like, uuuuaaaa",
                             IsReaded = false,
                             SenderId = -3
@@ -331,7 +412,7 @@ namespace VideoMessenger.Migrations
                         new
                         {
                             Id = -1,
-                            EmailAddress = "vasia322@bbqqkk.com",
+                            EmailAddress = "vasya322@ya.ru",
                             Login = "Pupok",
                             Password = "ahc4ahlv4lt",
                             PhoneNumber = "+78222345678",
@@ -340,7 +421,7 @@ namespace VideoMessenger.Migrations
                         new
                         {
                             Id = -2,
-                            EmailAddress = "igor228@bbqqkk.com",
+                            EmailAddress = "igor2005@ya.ru",
                             Login = "Uxo",
                             Password = "aklovfaoper",
                             PhoneNumber = "+79221234564",
@@ -349,8 +430,8 @@ namespace VideoMessenger.Migrations
                         new
                         {
                             Id = -3,
-                            EmailAddress = "openheart@bbqqkk.com",
-                            Login = "Davalka",
+                            EmailAddress = "sodeep@ya.ru",
+                            Login = "Poland",
                             Password = "12345",
                             PhoneNumber = "+78921234567",
                             Username = "Masha"
