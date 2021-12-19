@@ -4,7 +4,7 @@ import cs from './Chat.module.css';
 
 function Chat({ chat, onChatClick }) {
   return (
-    <div className={cs.chat} onClick={()=>onChatClick()}>
+    <div className={cs.chat} onClick={() => onChatClick()}>
       {/*<UserIcon color={chat.user.avatar} />*/}
       <ChatContent fromUser={chat.lastMessage.senderId} textMessage={chat.lastMessage.data} />
     </div>

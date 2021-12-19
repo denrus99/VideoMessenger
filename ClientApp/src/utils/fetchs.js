@@ -17,6 +17,7 @@
         user
     }
 };
+
 const registerUser = async function(login, emailAddress, phoneNumber, password){
     let model = {
         login,
@@ -38,6 +39,7 @@ const registerUser = async function(login, emailAddress, phoneNumber, password){
         user
     }
 };
+
 const getMessages = async function(chatId){
     let response = await fetch(`/chats/${chatId}/messages`,{
         method: 'GET'
@@ -48,6 +50,7 @@ const getMessages = async function(chatId){
         messages
     }
 };
+
 const createChat = async function(chatName, senderLogin, recipientLogins){
     let body = {
         chatName,
@@ -66,6 +69,7 @@ const createChat = async function(chatName, senderLogin, recipientLogins){
         status: response.ok
     }
 };
+
 const addFriend = async function(senderLogin, recipientLogin){
     let body = {
         senderLogin,
@@ -82,6 +86,7 @@ const addFriend = async function(senderLogin, recipientLogin){
         status: response.ok
     }
 };
+
 const acceptFriend = async function(user, friend){
     let body = {
         user,
@@ -98,6 +103,7 @@ const acceptFriend = async function(user, friend){
         status: response.ok
     }
 };
+
 const removeFriend = async function(user, friend){
     let body = {
         user,
@@ -114,6 +120,7 @@ const removeFriend = async function(user, friend){
         status: response.ok
     }
 };
+
 const getFriends = async function(login){
     let response = await fetch(`/friend/${login}`,{
         method: 'GET'
@@ -124,6 +131,7 @@ const getFriends = async function(login){
         friends
     }
 };
+
 const getUserInfo = async function(login){
     let response = await fetch(`/account/${login}`,{
         method: 'GET'
@@ -134,6 +142,7 @@ const getUserInfo = async function(login){
         info
     }
 };
+
 const getChats = async function(login){
     let response = await fetch(`/account/${login}/chats`,{
         method: 'GET'

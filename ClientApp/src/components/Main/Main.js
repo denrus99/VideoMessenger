@@ -1,19 +1,14 @@
-import React, {createContext, useContext, useReducer, useState, useEffect} from 'react';
-import Sidebar from '../components/Sidebar/Sidebar';
-
-import EmptyScreen from '../components/Screens/EmptyScreens/EmptyScreen'
-import ChatScreen from '../components/Screens/ChatScreen/ChatScreen';
+import React, { createContext, useContext, useReducer, useState, useEffect } from 'react';
+import { Route, Switch } from "react-router-dom";
+import { useHistory } from "react-router";
+import { getChats, registerUser, loginUser, createChat } from "../../utils/fetchs"
+import Sidebar from '../Sidebar/Sidebar';
+import ChatScreen from '../Screens/ChatScreen/ChatScreen';
+import Home from "../Screens/Home/Home";
+import Signin from "../Signin/Signin";
+import Room from "../Room/Room";
 import cs from "./Main.module.css"
-import {Route, Switch} from "react-router-dom";
-import Home from "./Home";
-import About from "./About";
-import Signin from "./Signin";
-import Room from "./Room";
-import Lobby from "./Lobby";
-import Chat from "../components/Chat";
-import Video from "../components/Video";
-import {getChats, registerUser, loginUser, createChat} from "../utils/fetchs"
-import {useHistory} from "react-router";
+
 
 function CreateChat(props) {
     let requestData = {
@@ -21,32 +16,34 @@ function CreateChat(props) {
         senderLogin: props.login,
         recipientLogins: undefined
     }
-    const getRecipentLogins = (event)=>{
+
+    const getRecipentLogins = (event) => {
         let arr = event.target.value.split('\n');
-        if (arr.length > 0){
+        if (arr.length > 0) {
             requestData.recipientLogins = [];
-            arr.forEach((item)=>{
+            arr.forEach((item) => {
                 requestData.recipientLogins.push(item);
             });
         }
     }
-    return(
+
+    return (
         <div className={cs.formBackground}>
             <div className={cs.createForm}>
                 <div className={cs.createFormInput}>
                     <label htmlFor={'chatName'}>Название чата</label>
-                    <input id={'chatName'} className={cs.createFormInput} onChange={(event)=>{
+                    <input id={'chatName'} className={cs.createFormInput} onChange={(event) => {
                         requestData.chatName = event.target.value;
-                    }}/>
+                    }} />
                 </div>
                 <div className={cs.createFormInput}>
                     <label htmlFor={'recipentLogins'}>Участники чата</label>
-                    <textarea id={'recipentLogins'} className={cs.createFormInput} onChange={(event)=>{
+                    <textarea id={'recipentLogins'} className={cs.createFormInput} onChange={(event) => {
                         getRecipentLogins(event);
-                    }}/>
+                    }} />
                 </div>
-                <button type={'button'} onClick={async function(){
-                    if (requestData.chatName && requestData.senderLogin && requestData.recipientLogins){
+                <button type={'button'} onClick={async function () {
+                    if (requestData.chatName && requestData.senderLogin && requestData.recipientLogins) {
                         let result = await createChat(requestData.chatName, requestData.senderLogin, requestData.recipientLogins);
                         if (result.status)
                             props.closeForm();
@@ -186,15 +183,16 @@ function Main() {
     const [showCreateCall, setShowCreateCall] = useState(false);
 
     useEffect(() => {
-        if (user){
+        if (user) {
             let response = getChats(user.login);
-            if (response.status){
+            if (response.status) {
                 setChats(response.chats)
             } else {
                 alert("Не удалось загрузить список чатов.")
             }
         }
-    },[user]);
+    }, [user]);
+
     useEffect(() => {
         if (user !== undefined) {
             setAuth(true);
@@ -218,14 +216,14 @@ function Main() {
 
     return (
         <div className={cs.main}>
-            {!isAuth && <Signin authenticateUser={authenticateUser}/>}
-            {isAuth && showCreateChat && <CreateChat login={user.login} closeForm={()=>{setShowCreateChat(false)}}/>}
-            {isAuth && <Sidebar chats={chats} openCreateChatForm={()=>{setShowCreateChat(true)}} onChatClick={() => {
+            {!isAuth && <Signin authenticateUser={authenticateUser} />}
+            {isAuth && showCreateChat && <CreateChat login={user.login} closeForm={() => { setShowCreateChat(false) }} />}
+            {isAuth && <Sidebar chats={chats} openCreateChatForm={() => { setShowCreateChat(true) }} onChatClick={() => {
                 history.push(`/chat`);
-            }}/>}
+            }} />}
             {isAuth && <Rouiting onCallClick={(roomId) => {
                 history.push(`/room/${roomId}`);
-            }}/>}
+            }} />}
             {/*<ChatScreen />*/}
         </div>
     );
@@ -235,16 +233,16 @@ function Main() {
 const Rouiting = (props) => {
     return (
         <Switch>
-            <Route exact path='/' component={Home}/>
+            <Route exact path='/' component={Home} />
             {/*<Route path='/signin'>*/}
             {/*  <Signin/>*/}
             {/*</Route>*/}
             <Route exact path='/room/:id'>
-                <Room/>
+                <Room />
             </Route>
             {/*<Route path='/lobby' component={Lobby} />*/}
             <Route path='/chat'>
-                <ChatScreen onCallClick={props.onCallClick}/>
+                <ChatScreen onCallClick={props.onCallClick} />
             </Route>
             {/*<Route path='/video' component={Video} />*/}
         </Switch>
