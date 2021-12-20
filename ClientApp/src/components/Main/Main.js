@@ -8,6 +8,7 @@ import Home from "../Screens/Home/Home";
 import Signin from "../Signin/Signin";
 import Room from "../Room/Room";
 import cs from "./Main.module.css"
+import InvitationsWindow from '../InvitationsWindow/InvitationsWindow';
 
 
 function CreateChat(props) {
@@ -181,6 +182,7 @@ function Main() {
     const [isAuth, setAuth] = useState(false);
     const [showCreateChat, setShowCreateChat] = useState(false);
     const [showCreateCall, setShowCreateCall] = useState(false);
+    const [showInvitations, setShowInvitations] = useState(false);
 
     useEffect(() => {
         if (user) {
@@ -218,9 +220,16 @@ function Main() {
         <div className={cs.main}>
             {!isAuth && <Signin authenticateUser={authenticateUser} />}
             {isAuth && showCreateChat && <CreateChat login={user.login} closeForm={() => { setShowCreateChat(false) }} />}
-            {isAuth && <Sidebar chats={chats} openCreateChatForm={() => { setShowCreateChat(true) }} onChatClick={() => {
-                history.push(`/chat`);
-            }} />}
+            {isAuth && showInvitations && <InvitationsWindow closeForm={() => setShowInvitations(false)}/>}
+            {isAuth && 
+            <Sidebar 
+                chats={chats}
+                openCreateChatForm={() => { setShowCreateChat(true) }}
+                onChatClick={() => {
+                    history.push(`/chat`);
+                }}
+                openInvitationsWindow={() => setShowInvitations(true)} />
+            }
             {isAuth && <Rouiting onCallClick={(roomId) => {
                 history.push(`/room/${roomId}`);
             }} />}

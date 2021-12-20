@@ -154,7 +154,39 @@ const getChats = async function(login){
     }
 };
 
-export {getChats, 
+const acceptChat = async function(recipientLogin, chatId) {
+    const body = {
+        recipientLogin,
+        chatId,
+    };
+
+    const response = await fetch('/chat/accept', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(body)
+    });
+
+    return {
+        status: response.ok
+    }
+};
+
+const getInvitations = async function() {
+    // Пока так
+    const response = await fetch('https://jsonplaceholder.typicode.com/users', {
+        method: 'GET',
+    });
+    const invitations = await response.json();
+    return {
+        status: response.status,
+        invitations
+    }
+};
+
+export {
+    getChats, 
     getUserInfo, 
     getFriends, 
     removeFriend, 
@@ -163,4 +195,7 @@ export {getChats,
     createChat, 
     getMessages,
     registerUser, 
-    loginUser}
+    loginUser,
+    acceptChat,
+    getInvitations,
+}

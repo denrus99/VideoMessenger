@@ -27,6 +27,9 @@ function SidebarMenu(props) {
                 <button type={'button'} className={cs.sidebarMenuBtn}>
                     Начать видеозвонок
                 </button>
+                <button type={'button'} className={cs.sidebarMenuBtn} onClick={props.openInvitationsWindow}>
+                    Приглашения
+                </button>
                 <button type={'button'} className={cs.sidebarMenuBtn}>
                     Сменить пароль
                 </button>
@@ -47,7 +50,13 @@ function Sidebar(props) {
     return (
         <div className={cs.sidebar}>
             <SidebarHeader onMenuClick={() => { setShow(!showMenu) }} />
-            <SidebarMenu show={showMenu} userLogin={userLogin} userEmail={userEmail} openCreateChatForm={props.openCreateChatForm} />
+            <SidebarMenu 
+                show={showMenu} 
+                userLogin={userLogin} 
+                userEmail={userEmail} 
+                openCreateChatForm={props.openCreateChatForm} 
+                openInvitationsWindow={props.openInvitationsWindow}
+            />
             <div className={cs.sidebarContainer}>
                 <ChatsContainer chats={props.chats} onChatClick={() => props.onChatClick()} />
             </div>
