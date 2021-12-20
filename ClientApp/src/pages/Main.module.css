@@ -15,6 +15,7 @@
     margin: auto;
     background: #e3e5e8;
     z-index: 6;
+    opacity: 1;
 }
 
 .formBackground {

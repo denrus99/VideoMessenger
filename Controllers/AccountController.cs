@@ -109,24 +109,47 @@ namespace AuthApp.Controllers
                                            .Include(o => o.Role)
                                            .Where(o=>o.User.Login == login)
                                            .ToArrayAsync();
-
+            var chats = new List<Chat>();
             foreach (var participation in userParticipations)
             {
-                var lastMessage = await db.Messages.OrderByDescending(m => m.CreationDate)                    
-                                                   .FirstAsync();
-                var info = new
+                chats.Add(db.Chats.First(x => x.Id == participation.ChatId));
+            }
+            foreach (var chat in chats)
+            {
+                var lastMessage = db.Messages.OrderByDescending(m => m.CreationDate)
+                    .Where(m => m.ChatId == chat.Id).FirstOrDefault();
+                if (lastMessage != null)
                 {
-                    ChatId = participation.ChatId,
-                    ChatName = participation.Chat.ChatName,
-                    LastMessage = new 
-                        { Data = lastMessage.Data, 
-                        Sender = lastMessage.SenderId,
-                        IsReaded = lastMessage.IsReaded, 
-                        CreationDate = lastMessage.CreationDate
-                    },
-                    Role = participation.Role
-                };
-                res.Add(info);
+                    var info = new
+                    {
+                        ChatId = chat.Id,
+                        ChatName = chat.ChatName,
+                        LastMessage = new 
+                        { 
+                            Data = lastMessage.Data, 
+                            Sender = lastMessage.Sender,
+                            IsReaded = lastMessage.IsReaded, 
+                            CreationDate = lastMessage.CreationDate
+                        }
+                    };
+                    res.Add(info);
+                }
+                else
+                {
+                    var info = new
+                    {
+                        ChatId = chat.Id,
+                        ChatName = chat.ChatName,
+                        LastMessage = new 
+                        { 
+                            Data = "В этом чате нет сообщений.", 
+                            Sender = "",
+                            IsReaded = false.ToString(), 
+                            CreationDate = ""
+                        }
+                    };
+                    res.Add(info);
+                }
             }
             
             var json = JsonSerializer.Serialize(res);

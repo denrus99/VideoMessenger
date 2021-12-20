@@ -32,8 +32,17 @@
     font-weight: bold;
     /*color: white;*/
 }
+.lastMessage {
+    display: flex;
+    align-items: center;
+}
 
-.textMessage {
+.lastMessageSender {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.lastMessageText {
     width: 170px;
     font-size: 14px;
     /*color: white;*/

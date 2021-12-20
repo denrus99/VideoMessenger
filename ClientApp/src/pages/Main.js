@@ -14,6 +14,7 @@ import Chat from "../components/Chat";
 import Video from "../components/Video";
 import {getChats, registerUser, loginUser, createChat} from "../utils/fetchs"
 import {useHistory} from "react-router";
+import {HubConnectionBuilder} from "@microsoft/signalr";
 
 function CreateChat(props) {
     let requestData = {
@@ -21,32 +22,32 @@ function CreateChat(props) {
         senderLogin: props.login,
         recipientLogins: undefined
     }
-    const getRecipentLogins = (event)=>{
+    const getRecipentLogins = (event) => {
         let arr = event.target.value.split('\n');
-        if (arr.length > 0){
+        if (arr.length > 0) {
             requestData.recipientLogins = [];
-            arr.forEach((item)=>{
+            arr.forEach((item) => {
                 requestData.recipientLogins.push(item);
             });
         }
     }
-    return(
+    return (
         <div className={cs.formBackground}>
             <div className={cs.createForm}>
                 <div className={cs.createFormInput}>
                     <label htmlFor={'chatName'}>Название чата</label>
-                    <input id={'chatName'} className={cs.createFormInput} onChange={(event)=>{
+                    <input id={'chatName'} className={cs.createFormInput} onChange={(event) => {
                         requestData.chatName = event.target.value;
                     }}/>
                 </div>
                 <div className={cs.createFormInput}>
                     <label htmlFor={'recipentLogins'}>Участники чата</label>
-                    <textarea id={'recipentLogins'} className={cs.createFormInput} onChange={(event)=>{
+                    <textarea id={'recipentLogins'} className={cs.createFormInput} onChange={(event) => {
                         getRecipentLogins(event);
                     }}/>
                 </div>
-                <button type={'button'} onClick={async function(){
-                    if (requestData.chatName && requestData.senderLogin && requestData.recipientLogins){
+                <button type={'button'} onClick={async function () {
+                    if (requestData.chatName && requestData.senderLogin && requestData.recipientLogins) {
                         let result = await createChat(requestData.chatName, requestData.senderLogin, requestData.recipientLogins);
                         if (result.status)
                             props.closeForm();
@@ -75,12 +76,31 @@ function CreateChat(props) {
 //         </div>
 //     )
 // }
+function Test(props) {
+    let message = "";
+    const connection = new HubConnectionBuilder()
+        .withUrl("https://localhost:5001/hubs/chat")
+        .withAutomaticReconnect()
+        .build();
+    connection.start()
+
+    function Send(message) {
+        connection.send("TestHub", message);
+    }
+
+    return (
+        <div>
+            <input id={"message"} onChange={(event) => message = event.target.value}/>
+            <button onClick={() => (Send(message))}>Отправить</button>
+        </div>
+    )
+}
 
 function Main() {
-    // let chats = getChats('Pupok').chats;
     const history = useHistory();
     const [user, setUser] = useState(undefined);
     const [chats, setChats] = useState([]);
+    const [isTest, setTest] = useState(false);
     // const chats = [
     //     {
     //         user: {
@@ -183,23 +203,29 @@ function Main() {
     // ];
     const [isAuth, setAuth] = useState(false);
     const [showCreateChat, setShowCreateChat] = useState(false);
-    const [showCreateCall, setShowCreateCall] = useState(false);
+    const [showChatScreen, setShowChatScreen] = useState(false);
+    const [currentChat, setCurrentChat] = useState(undefined);
 
-    useEffect(() => {
-        if (user){
-            let response = getChats(user.login);
-            if (response.status){
+    useEffect(async function(){
+        if (user) {
+            let response = await getChats(user.login);
+            if (response.status) {
                 setChats(response.chats)
             } else {
                 alert("Не удалось загрузить список чатов.")
             }
         }
-    },[user]);
+    }, [user]);
     useEffect(() => {
         if (user !== undefined) {
             setAuth(true);
         }
-    }, [user])
+    }, [user]);
+    useEffect(()=>{
+        if (currentChat){
+            setShowChatScreen(true);
+        }
+    }, [currentChat])
 
     const authenticateUser = async function (newUser, userData) {
         let response;
@@ -218,13 +244,38 @@ function Main() {
 
     return (
         <div className={cs.main}>
+            {/*<button type={'button'} onClick={() => setTest(!isTest)}>isTest</button>*/}
+            {/*{isTest && <Test/>}*/}
             {!isAuth && <Signin authenticateUser={authenticateUser}/>}
-            {isAuth && showCreateChat && <CreateChat login={user.login} closeForm={()=>{setShowCreateChat(false)}}/>}
-            {isAuth && <Sidebar chats={chats} openCreateChatForm={()=>{setShowCreateChat(true)}} onChatClick={() => {
-                history.push(`/chat`);
+            {isAuth && showCreateChat && <CreateChat login={user.login} closeForm={() => {
+                setShowCreateChat(false)
             }}/>}
-            {isAuth && <Rouiting onCallClick={(roomId) => {
-                history.push(`/room/${roomId}`);
+            {isAuth && <Sidebar
+                chats={chats}
+                openCreateChatForm={() => {
+                    setShowCreateChat(true)
+                }}
+                onChatClick={(chat) => {
+                    setCurrentChat(chat);
+                    history.push(`/chat`);
+                }}/>}
+            {isAuth && showChatScreen && <ChatScreen
+                onCallClick={(roomId) => {
+                    setShowChatScreen(false);
+                    history.push(`/room/${roomId}`);
+                }}
+                user={user}
+                chat={currentChat}
+            />
+            }
+            {isAuth && <Rouiting
+                currentChat={currentChat}
+                onCallDeny={() => {
+                    history.push('/')
+                }}
+                onCallClick={(roomId) => {
+                    setShowChatScreen(false);
+                    history.push(`/room/${roomId}`);
             }}/>}
             {/*<ChatScreen />*/}
         </div>
@@ -240,15 +291,14 @@ const Rouiting = (props) => {
             {/*  <Signin/>*/}
             {/*</Route>*/}
             <Route exact path='/room/:id'>
-                <Room/>
+                <Room onCallDeny={props.onCallDeny}/>
             </Route>
             {/*<Route path='/lobby' component={Lobby} />*/}
-            <Route path='/chat'>
-                <ChatScreen onCallClick={props.onCallClick}/>
-            </Route>
-            {/*<Route path='/video' component={Video} />*/}
+            {/*<Route path='/chat'>*/}
+            {/*    <ChatScreen onCallClick={props.onCallClick} chat={props.currentChat}/>*/}
+            {/*</Route>*/}
         </Switch>
-    );
+)
 }
 
 export default Main;

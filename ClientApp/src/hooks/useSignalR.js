@@ -6,7 +6,7 @@ export default function useSignalR() {
     
     useEffect(() => {
         const connection = new HubConnectionBuilder()
-            .withUrl("https://localhost:5001/hubs/chat")
+            .withUrl("https://localhost:5001/hubs/roomHub")
             .withAutomaticReconnect()
             .build();
         setConnection(connection);

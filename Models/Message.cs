@@ -18,5 +18,22 @@ namespace VideoMessenger.Models
         public DateTime CreationDate { get; set; }
 
         public bool IsReaded { get; set; }
+
+        public Message()
+        {
+            
+        }
+
+        public Message(int id, int senderId, User sender, int chatId, Chat chat, string data)
+        {
+            Id = id;
+            SenderId = senderId;
+            Sender = sender;
+            ChatId = chatId;
+            Chat = chat;
+            Data = data;
+            CreationDate = DateTime.Now;
+            IsReaded = false;
+        }
     }
 }

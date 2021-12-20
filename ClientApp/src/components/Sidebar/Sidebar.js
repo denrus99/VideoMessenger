@@ -49,7 +49,7 @@ function Sidebar(props) {
             <SidebarHeader onMenuClick={()=>{setShow(!showMenu)}}/>
             <SidebarMenu show={showMenu} userLogin={userLogin} userEmail={userEmail} openCreateChatForm={props.openCreateChatForm}/>
             <div className={cs.sidebarContainer}>
-                <ChatsContainer chats={props.chats} onChatClick={() => props.onChatClick()}/>
+                <ChatsContainer chats={props.chats} onChatClick={props.onChatClick}/>
             </div>
         </div>
     );

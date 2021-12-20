@@ -11,7 +11,6 @@
         body: JSON.stringify(model)
     });
     let user = await response.json();
-    debugger;
     return {
         status: response.ok,
         user
@@ -32,7 +31,6 @@ const registerUser = async function(login, emailAddress, phoneNumber, password){
         body: JSON.stringify(model)
     });
     let user = await response.json();
-    debugger;
     return {
         status: response.ok,
         user
@@ -54,7 +52,6 @@ const createChat = async function(chatName, senderLogin, recipientLogins){
         senderLogin,
         recipientLogins
     };
-    debugger
     let response = await fetch("/chats",{
         method: 'PUT',
         headers: {

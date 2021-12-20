@@ -1,17 +1,52 @@
-import React from 'react';
+import {React, useEffect, useState} from 'react';
 import cs from './ChatScreen.module.css'
 import {Button} from 'reactstrap';
 import MessageContainer from '../../MessageContainer/MessageContainer';
 import SendMessageForm from '../../Forms/SendMessageForm';
+import {HubConnectionBuilder} from "@microsoft/signalr";
+import {getMessages} from "../../../utils/fetchs";
 
 function ChatScreen(props) {
     const roomId = 'aaeb682b-f748-401c-b48a-7172d7b89858';
+    const chatId = props.chat.ChatId;
+    const [chatHub, setChatHub] = useState();
+    const [messages, setMessages] = useState([]);
+    useEffect(async function() {
+        let messages = (await getMessages(chatId)).messages;
+        setMessages(messages);
+    }, []);
+    useEffect(()=>{
+        if (!chatHub && messages.length > 0)
+        setChatHub(new HubConnectionBuilder()
+            .withUrl("https://localhost:5001/hubs/chat")
+            .withAutomaticReconnect()
+            .build());
+    }, [messages]);
+    useEffect(()=>{
+        if (chatHub){
+            chatHub.start().then(() => {
+                console.log(chatHub.state);
+                chatHub.send("JoinChat", chatId, props.user.login);
+                chatHub.onclose(error => console.log(error))
+                chatHub.on("AcceptMessage", (message)=>{
+                    debugger
+                    setMessages([message, ...messages])
+                })
+            });
+        }
+    }, [chatHub]);
     return (
         <div className={cs.screenContainer}>
             <ChatHeader photoUrl={'https://cs5.pikabu.ru/post_img/2015/12/15/11/1450209491166030901.jpg'}
-                        chatName={'Some chat'} onCallClick={()=>{props.onCallClick(roomId)}}/>
-            <MessageContainer/>
-            <SendMessageForm/>
+                        chatName={props.chat.ChatName} onCallClick={() => {
+                props.onCallClick(chatId)
+            }}/>
+            <MessageContainer messages={messages} userLogin={props.user.login}/>
+            <SendMessageForm sendMessage={(message)=>
+               {
+                   console.log(chatHub.state)
+                   chatHub.send("SendMessage", message, props.user.login, chatId)
+               }}/>
         </div>
     );
 }
@@ -21,7 +56,7 @@ function ChatHeader(props) {
         <div className={cs.chatHeader}>
             <img className={cs.chatIcon} src={props.photoUrl}/>
             <div className={cs.chatName}>{props.chatName}</div>
-            <button type={'button'} className={cs.btn}  onClick={props.onCallClick}>
+            <button type={'button'} className={cs.btn} onClick={props.onCallClick}>
                 <img className={cs.btnIcon} src={'video_icon.png'}/>
             </button>
             <button type={'button'} className={cs.btn}>
