@@ -13,7 +13,7 @@ export default function useNewWebRTC(roomId) {
     useEffect(() => {
         //Создаём сигнальный механизм
         const newSignalConnection = new HubConnectionBuilder()
-            .withUrl("https://localhost:5001/hubs/chat")
+            .withUrl("https://localhost:5001/hubs/roomHub")
             .withAutomaticReconnect()
             .build();
         setSignalConnection(newSignalConnection);
@@ -35,6 +35,9 @@ export default function useNewWebRTC(roomId) {
                             setLocalStream(stream);
                         });
                 });
+            return ()=>{
+                signalConnection.stop();
+            }
         }
     }, [signalConnection]);
     
@@ -143,6 +146,14 @@ export default function useNewWebRTC(roomId) {
             });
             // Оповещаем остальных клиентов в комнате о том, что мы готовы общаться
             signalConnection.send('JoinRoom', roomId);
+            return ()=>{
+                debugger
+                localStream.getTracks().forEach(m => m.stop());
+                remoteStreams.forEach(m => m.getTracks().forEach(t=>t.stop()))
+                setLocalStream(undefined);
+                setRemoteStreams(undefined);
+                setRtcConnections(undefined);
+            }
         }
     }, [localStream]);
     

@@ -8,6 +8,7 @@
     margin: 10px;
     box-shadow: 0 0 2px 2px #000;
     border: 0;
+    font-size: 24px;
 }
 
 .sendMessageForm {
@@ -16,6 +17,7 @@
     padding: 0;
     color: white;
     display: flex;
+    font-size: 24px;
 }
 
 .inputMessage:focus {

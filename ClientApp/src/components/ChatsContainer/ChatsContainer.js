@@ -8,7 +8,9 @@ function ChatsContainer(props) {
     <div className={cs.chatsContainer}>
       {
         props.chats.map((chat, index) => {
-          return <Chat key={index} chat={chat} onChatClick={()=>{props.onChatClick()}}/>
+          console.log(chat)
+          return <Chat key={index} chat={chat} onChatClick={()=>{
+            props.onChatClick(chat)}}/>
         })
       }
     </div>

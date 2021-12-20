@@ -93,8 +93,8 @@ namespace VideoMassenger
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
-                endpoints.MapHub<SignalRtcHub>("/hubs/chat");
-
+                endpoints.MapHub<SignalRtcHub>("/hubs/roomHub");
+                endpoints.MapHub<ChatHub>("/hubs/chat");
             });
 
             app.UseSpa(spa =>

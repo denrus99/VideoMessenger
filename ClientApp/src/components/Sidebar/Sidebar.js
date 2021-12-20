@@ -58,7 +58,7 @@ function Sidebar(props) {
                 openInvitationsWindow={props.openInvitationsWindow}
             />
             <div className={cs.sidebarContainer}>
-                <ChatsContainer chats={props.chats} onChatClick={() => props.onChatClick()} />
+                <ChatsContainer chats={props.chats} onChatClick={props.onChatClick}/>
             </div>
         </div>
     );

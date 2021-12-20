@@ -56,7 +56,8 @@ namespace VideoMessenger.Controllers
         {       
             var messages = await db.Messages.Include(m=>m.Chat)
                                       .Include(m=>m.Sender)
-                                      .Where(m => m.Id == id)
+                                      .Where(m => m.ChatId == id)
+                                      .OrderByDescending(m => m.CreationDate)
                                       .ToArrayAsync();
             var json = JsonSerializer.Serialize(messages);
             return Ok(json);

@@ -34,41 +34,16 @@ function CallHeader(props) {
     );
 }
 
-export default function Room() {
-    const { id: roomId } = useParams();
+export default function Room(props) {
+    const {id: roomId} = useParams();
     const [localStream, remoteStreams] = useNewWebRTC(roomId);
-    const testImgs = [
-        "https://hot-game.info/uploads/media/slide_game/0001/44/thumb_43487_slide_game_full.jpeg",
-        "https://hot-game.info/uploads/media/slide_game/0001/44/thumb_43487_slide_game_full.jpeg",
-        "https://hot-game.info/uploads/media/slide_game/0001/44/thumb_43487_slide_game_full.jpeg",
-        "https://hot-game.info/uploads/media/slide_game/0001/44/thumb_43487_slide_game_full.jpeg",
-        "https://hot-game.info/uploads/media/slide_game/0001/44/thumb_43487_slide_game_full.jpeg",
-        "https://hot-game.info/uploads/media/slide_game/0001/44/thumb_43487_slide_game_full.jpeg",
-        "https://hot-game.info/uploads/media/slide_game/0001/44/thumb_43487_slide_game_full.jpeg",
-        "https://hot-game.info/uploads/media/slide_game/0001/44/thumb_43487_slide_game_full.jpeg",
-        "https://hot-game.info/uploads/media/slide_game/0001/44/thumb_43487_slide_game_full.jpeg",
-        "https://hot-game.info/uploads/media/slide_game/0001/44/thumb_43487_slide_game_full.jpeg",
-        "https://hot-game.info/uploads/media/slide_game/0001/44/thumb_43487_slide_game_full.jpeg",
-        "https://hot-game.info/uploads/media/slide_game/0001/44/thumb_43487_slide_game_full.jpeg",
-        "https://hot-game.info/uploads/media/slide_game/0001/44/thumb_43487_slide_game_full.jpeg",
-        "https://hot-game.info/uploads/media/slide_game/0001/44/thumb_43487_slide_game_full.jpeg",
-        "https://hot-game.info/uploads/media/slide_game/0001/44/thumb_43487_slide_game_full.jpeg"
-    ];
 
     return (
         <div className={cs.screenContainer}>
             <CallHeader callName={'Some call'}
                 photoUrl={'https://cs5.pikabu.ru/post_img/2015/12/15/11/1450209491166030901.jpg'} />
             <div className={cs.videoContainer}>
-                {/*{testImgs.map((url) => <img src={url}*/}
-                {/*                            style={{*/}
-                {/*                                width: 'auto',*/}
-                {/*                                height: getHeight(testImgs.length),*/}
-                {/*                                marginTop: '1%',*/}
-                {/*                                borderRadius: '5%',*/}
-                {/*                                boxShadow: '0 2px 4px 4px'*/}
-                {/*                            }}/>)}*/}
-                <Video stream={localStream} isMuted={true} height={getHeight(remoteStreams.length)} />
+                <Video stream={localStream} isMuted={true} height={getHeight(remoteStreams.length)}/>
                 {remoteStreams.map((remoteStream) => <Video stream={remoteStream} isMuted={false}
                     height={getHeight(remoteStreams.length)} />)}
             </div>
@@ -82,8 +57,8 @@ export default function Room() {
                 <button type={'button'} className={cs.panelBtn}>
                     <img src={'/mic_icon.png'} className={cs.panelBtnIcon} />
                 </button>
-                <button type={'button'} className={cs.declineBtn}>
-                    <img src={'/telephone_icon.png'} className={cs.panelBtnIcon} />
+                <button type={'button'} className={cs.declineBtn} onClick={props.onCallDeny}>
+                    <img src={'/telephone_icon.png'} className={cs.panelBtnIcon}/>
                 </button>
             </div>
         </div>

@@ -9,6 +9,7 @@ import Signin from "../Signin/Signin";
 import Room from "../Room/Room";
 import cs from "./Main.module.css"
 import InvitationsWindow from '../InvitationsWindow/InvitationsWindow';
+import {HubConnectionBuilder} from "@microsoft/signalr";
 
 
 function CreateChat(props) {
@@ -17,7 +18,6 @@ function CreateChat(props) {
         senderLogin: props.login,
         recipientLogins: undefined
     }
-
     const getRecipentLogins = (event) => {
         let arr = event.target.value.split('\n');
         if (arr.length > 0) {
@@ -27,7 +27,6 @@ function CreateChat(props) {
             });
         }
     }
-
     return (
         <div className={cs.formBackground}>
             <div className={cs.createForm}>
@@ -73,12 +72,31 @@ function CreateChat(props) {
 //         </div>
 //     )
 // }
+function Test(props) {
+    let message = "";
+    const connection = new HubConnectionBuilder()
+        .withUrl("https://localhost:5001/hubs/chat")
+        .withAutomaticReconnect()
+        .build();
+    connection.start()
+
+    function Send(message) {
+        connection.send("TestHub", message);
+    }
+
+    return (
+        <div>
+            <input id={"message"} onChange={(event) => message = event.target.value}/>
+            <button onClick={() => (Send(message))}>Отправить</button>
+        </div>
+    )
+}
 
 function Main() {
-    // let chats = getChats('Pupok').chats;
     const history = useHistory();
     const [user, setUser] = useState(undefined);
     const [chats, setChats] = useState([]);
+    const [isTest, setTest] = useState(false);
     // const chats = [
     //     {
     //         user: {
@@ -181,12 +199,13 @@ function Main() {
     // ];
     const [isAuth, setAuth] = useState(false);
     const [showCreateChat, setShowCreateChat] = useState(false);
-    const [showCreateCall, setShowCreateCall] = useState(false);
+    const [showChatScreen, setShowChatScreen] = useState(false);
+    const [currentChat, setCurrentChat] = useState(undefined);
     const [showInvitations, setShowInvitations] = useState(false);
 
-    useEffect(() => {
+    useEffect(async function(){
         if (user) {
-            let response = getChats(user.login);
+            let response = await getChats(user.login);
             if (response.status) {
                 setChats(response.chats)
             } else {
@@ -194,12 +213,16 @@ function Main() {
             }
         }
     }, [user]);
-
     useEffect(() => {
         if (user !== undefined) {
             setAuth(true);
         }
-    }, [user])
+    }, [user]);
+    useEffect(()=>{
+        if (currentChat){
+            setShowChatScreen(true);
+        }
+    }, [currentChat])
 
     const authenticateUser = async function (newUser, userData) {
         let response;
@@ -218,21 +241,42 @@ function Main() {
 
     return (
         <div className={cs.main}>
-            {!isAuth && <Signin authenticateUser={authenticateUser} />}
-            {isAuth && showCreateChat && <CreateChat login={user.login} closeForm={() => { setShowCreateChat(false) }} />}
+            {/*<button type={'button'} onClick={() => setTest(!isTest)}>isTest</button>*/}
+            {/*{isTest && <Test/>}*/}
+            {!isAuth && <Signin authenticateUser={authenticateUser}/>}
+            {isAuth && showCreateChat && <CreateChat login={user.login} closeForm={() => {
+                setShowCreateChat(false)
+            }}/>}
             {isAuth && showInvitations && <InvitationsWindow closeForm={() => setShowInvitations(false)}/>}
-            {isAuth && 
-            <Sidebar 
+            {isAuth && <Sidebar
                 chats={chats}
-                openCreateChatForm={() => { setShowCreateChat(true) }}
-                onChatClick={() => {
+                openCreateChatForm={() => {
+                    setShowCreateChat(true)
+                }}
+                onChatClick={(chat) => {
+                    setCurrentChat(chat);
                     history.push(`/chat`);
                 }}
                 openInvitationsWindow={() => setShowInvitations(true)} />
             }
-            {isAuth && <Rouiting onCallClick={(roomId) => {
-                history.push(`/room/${roomId}`);
-            }} />}
+            {isAuth && showChatScreen && <ChatScreen
+                onCallClick={(roomId) => {
+                    setShowChatScreen(false);
+                    history.push(`/room/${roomId}`);
+                }}
+                user={user}
+                chat={currentChat}
+            />
+            }
+            {isAuth && <Rouiting
+                currentChat={currentChat}
+                onCallDeny={() => {
+                    history.push('/')
+                }}
+                onCallClick={(roomId) => {
+                    setShowChatScreen(false);
+                    history.push(`/room/${roomId}`);
+            }}/>}
             {/*<ChatScreen />*/}
         </div>
     );
@@ -247,15 +291,14 @@ const Rouiting = (props) => {
             {/*  <Signin/>*/}
             {/*</Route>*/}
             <Route exact path='/room/:id'>
-                <Room />
+                <Room onCallDeny={props.onCallDeny}/>
             </Route>
             {/*<Route path='/lobby' component={Lobby} />*/}
-            <Route path='/chat'>
-                <ChatScreen onCallClick={props.onCallClick} />
-            </Route>
-            {/*<Route path='/video' component={Video} />*/}
+            {/*<Route path='/chat'>*/}
+            {/*    <ChatScreen onCallClick={props.onCallClick} chat={props.currentChat}/>*/}
+            {/*</Route>*/}
         </Switch>
-    );
+)
 }
 
 export default Main;
