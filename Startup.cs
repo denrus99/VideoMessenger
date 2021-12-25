@@ -10,11 +10,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using SignalRtcHubs;
 using VideoMessenger.Models;
-
+using System;
 
 namespace VideoMassenger
 {   
-
     public class Startup
     {
         private IConfigurationRoot confDB;
@@ -42,6 +41,7 @@ namespace VideoMassenger
                 .AddCookie(options => //CookieAuthenticationOptions
                 {
                     options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/signin");
+                    options.ExpireTimeSpan = TimeSpan.FromHours(1);
                 });
 
             services.AddControllersWithViews();
