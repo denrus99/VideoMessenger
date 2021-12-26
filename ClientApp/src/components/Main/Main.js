@@ -97,106 +97,6 @@ function Main() {
     const [user, setUser] = useState(undefined);
     const [chats, setChats] = useState([]);
     const [isTest, setTest] = useState(false);
-    // const chats = [
-    //     {
-    //         user: {
-    //             name: 'Petya',
-    //             avatar: 'olive',
-    //         },
-    //         text: 'Zdarova',
-    //     },
-    //     {
-    //         user: {
-    //             name: 'Vanya',
-    //             avatar: 'midnightblue',
-    //         },
-    //         text: 'Sheeeeeeeeeeeeeeeeeeeesh',
-    //     },
-    //     {
-    //         user: {
-    //             name: 'Alexey',
-    //             avatar: 'seagreen',
-    //         },
-    //         text: 'Chupapi Munyanya',
-    //     },
-    //     {
-    //         user: {
-    //             name: 'Vanya',
-    //             avatar: 'midnightblue',
-    //         },
-    //         text: 'Maksim lox',
-    //     },
-    //     {
-    //         user: {
-    //             name: 'Vanya',
-    //             avatar: 'midnightblue',
-    //         },
-    //         text: 'Maksim lox',
-    //     },
-    //     {
-    //         user: {
-    //             name: 'Vanya',
-    //             avatar: 'midnightblue',
-    //         },
-    //         text: 'Maksim lox',
-    //     },
-    //     {
-    //         user: {
-    //             name: 'Vanya',
-    //             avatar: 'midnightblue',
-    //         },
-    //         text: 'Maksim lox',
-    //     },
-    //     {
-    //         user: {
-    //             name: 'Vanya',
-    //             avatar: 'midnightblue',
-    //         },
-    //         text: 'Maksim lox',
-    //     },
-    //     {
-    //         user: {
-    //             name: 'Vanya',
-    //             avatar: 'midnightblue',
-    //         },
-    //         text: 'Maksim lox',
-    //     },
-    //     {
-    //         user: {
-    //             name: 'Vanya',
-    //             avatar: 'midnightblue',
-    //         },
-    //         text: 'Maksim lox',
-    //     },
-    //     {
-    //         user: {
-    //             name: 'Vanya',
-    //             avatar: 'midnightblue',
-    //         },
-    //         text: 'Maksim lox',
-    //     },
-    //     {
-    //         user: {
-    //             name: 'Vanya',
-    //             avatar: 'midnightblue',
-    //         },
-    //         text: 'Maksim lox',
-    //     },
-    //     {
-    //         user: {
-    //             name: 'Vanya',
-    //             avatar: 'midnightblue',
-    //         },
-    //         text: 'Maksim lox',
-    //     },
-    //     {
-    //         user: {
-    //             name: 'Vanya',
-    //             avatar: 'midnightblue',
-    //         },
-    //         text: 'Maksim lox',
-    //     },
-    // ];
     const [isAuth, setAuth] = useState(false);
     const [showCreateChat, setShowCreateChat] = useState(false);
     const [showChatScreen, setShowChatScreen] = useState(false);
@@ -262,6 +162,7 @@ function Main() {
             {isAuth && showChatScreen && <ChatScreen
                 onCallClick={(roomId) => {
                     setShowChatScreen(false);
+                    setCurrentChat(undefined);
                     history.push(`/room/${roomId}`);
                 }}
                 user={user}
@@ -271,6 +172,7 @@ function Main() {
             {isAuth && <Rouiting
                 currentChat={currentChat}
                 onCallDeny={() => {
+                    //setShowChatScreen(true);
                     history.push('/')
                 }}
                 onCallClick={(roomId) => {

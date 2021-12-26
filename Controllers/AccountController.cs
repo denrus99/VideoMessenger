@@ -127,7 +127,7 @@ namespace AuthApp.Controllers
                         LastMessage = new 
                         { 
                             Data = lastMessage.Data, 
-                            Sender = lastMessage.Sender,
+                            SenderId = lastMessage.SenderId,
                             IsReaded = lastMessage.IsReaded, 
                             CreationDate = lastMessage.CreationDate
                         }

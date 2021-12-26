@@ -7,7 +7,7 @@ function Chat({chat, onChatClick}) {
     return (
         <div className={cs.chat} onClick={() => onChatClick(chat)}>
             {/*<UserIcon color={chat.user.avatar} />*/}
-            <ChatContent chatName={chat.ChatName} fromUser={chat.LastMessage.Sender.Login}
+            <ChatContent chatName={chat.ChatName} fromUser={'SenderId: ' + chat.LastMessage.SenderId}
                          textMessage={chat.LastMessage.Data}/>
         </div>
     );

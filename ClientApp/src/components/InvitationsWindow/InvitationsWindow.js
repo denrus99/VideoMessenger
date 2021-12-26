@@ -6,7 +6,7 @@ import cs from './InvitationsWindow.module.css';
 function InvitationsWindow(props) {
     const [invitations, setInvitations] = useState([]);
 
-    const fetchInvations = async () => {
+    const fetchInvitations = async () => {
         const response = await getInvitations();
         if (response.status) {
             setInvitations(response.invitations);
@@ -15,7 +15,7 @@ function InvitationsWindow(props) {
         }
     }
 
-    useEffect(() => fetchInvations(), []);
+    useEffect(() => fetchInvitations(), []);
 
     return (
         <div className={cs.overlay} onClick={props.closeForm}>
