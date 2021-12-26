@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import cs from './SendMessageForm.module.css';
-import {Button} from 'reactstrap';
+
 
 function SendMessageForm(props) {
     const [message, setMessage] = useState("");

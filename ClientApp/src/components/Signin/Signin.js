@@ -1,7 +1,4 @@
-import React, {useState} from 'react';
-import {Container, ButtonGroup, Button} from 'reactstrap';
-import LoginForm from '../components/Forms/LoginForm';
-import SignupForm from '../components/Forms/SignupForm';
+import React, { useState } from 'react';
 import cs from './Signin.module.css'
 
 function Login(props) {
@@ -16,13 +13,13 @@ function Login(props) {
                 <label htmlFor={'emailAddress'} className={cs.signinLabel}>Адрес e-mail</label>
                 <input id={'emailAddress'} className={cs.signinInput} onChange={(event) => {
                     loginData.emailAddress = event.target.value;
-                }}/>
+                }} />
             </div>
             <div className={cs.complexInput}>
                 <label htmlFor={'password'} className={cs.signinLabel}>Пароль</label>
                 <input id={'password'} type={'password'} className={cs.signinInput} onChange={(event) => {
                     loginData.password = event.target.value;
-                }}/>
+                }} />
             </div>
             <button type={'button'} onClick={() => {
                 if (loginData.emailAddress && loginData.password)
@@ -47,25 +44,25 @@ function Signup(props) {
                 <label htmlFor={'login'} className={cs.signinLabel}>Логин</label>
                 <input id={'login'} className={cs.signinInput} onChange={(event) => {
                     signupData.login = event.target.value;
-                }}/>
+                }} />
             </div>
             <div className={cs.complexInput}>
                 <label htmlFor={'phoneNumber'} className={cs.signinLabel}>Телефон</label>
                 <input id={'phoneNumber'} className={cs.signinInput} onChange={(event) => {
                     signupData.phoneNumber = event.target.value;
-                }}/>
+                }} />
             </div>
             <div className={cs.complexInput}>
                 <label htmlFor={'emailAddress'} className={cs.signinLabel}>Адрес e-mail</label>
                 <input id={'emailAddress'} className={cs.signinInput} onChange={(event) => {
                     signupData.emailAddress = event.target.value;
-                }}/>
+                }} />
             </div>
             <div className={cs.complexInput}>
-                <label htmlFor={'password'}  type={'password'} className={cs.signinLabel}>Пароль</label>
+                <label htmlFor={'password'} type={'password'} className={cs.signinLabel}>Пароль</label>
                 <input id={'password'} className={cs.signinInput} onChange={(event) => {
                     signupData.password = event.target.value;
-                }}/>
+                }} />
             </div>
             <button type={'button'} onClick={() => {
                 if (signupData.login && signupData.password && signupData.emailAddress && signupData.phoneNumber)
@@ -86,8 +83,8 @@ function Signin(props) {
                     <button type={'button'} onClick={() => setLogin(true)}>Вход</button>
                     <button type={'button'} onClick={() => setLogin(false)}>Регистрация</button>
                 </div>
-                {login ? <Login authenticateUser={props.authenticateUser}/> :
-                    <Signup authenticateUser={props.authenticateUser}/>}
+                {login ? <Login authenticateUser={props.authenticateUser} /> :
+                    <Signup authenticateUser={props.authenticateUser} />}
             </div>
         </div>
         // </Container>

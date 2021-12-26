@@ -1,20 +1,16 @@
-import React, {createContext, useContext, useReducer, useState, useEffect} from 'react';
-import Sidebar from '../components/Sidebar/Sidebar';
-
-import EmptyScreen from '../components/Screens/EmptyScreens/EmptyScreen'
-import ChatScreen from '../components/Screens/ChatScreen/ChatScreen';
+import React, { createContext, useContext, useReducer, useState, useEffect } from 'react';
+import { Route, Switch } from "react-router-dom";
+import { useHistory } from "react-router";
+import { getChats, registerUser, loginUser, createChat } from "../../utils/fetchs"
+import Sidebar from '../Sidebar/Sidebar';
+import ChatScreen from '../Screens/ChatScreen/ChatScreen';
+import Home from "../Screens/Home/Home";
+import Signin from "../Signin/Signin";
+import Room from "../Room/Room";
 import cs from "./Main.module.css"
-import {Route, Switch} from "react-router-dom";
-import Home from "./Home";
-import About from "./About";
-import Signin from "./Signin";
-import Room from "./Room";
-import Lobby from "./Lobby";
-import Chat from "../components/Chat";
-import Video from "../components/Video";
-import {getChats, registerUser, loginUser, createChat} from "../utils/fetchs"
-import {useHistory} from "react-router";
+import InvitationsWindow from '../InvitationsWindow/InvitationsWindow';
 import {HubConnectionBuilder} from "@microsoft/signalr";
+
 
 function CreateChat(props) {
     let requestData = {
@@ -38,13 +34,13 @@ function CreateChat(props) {
                     <label htmlFor={'chatName'}>Название чата</label>
                     <input id={'chatName'} className={cs.createFormInput} onChange={(event) => {
                         requestData.chatName = event.target.value;
-                    }}/>
+                    }} />
                 </div>
                 <div className={cs.createFormInput}>
                     <label htmlFor={'recipentLogins'}>Участники чата</label>
                     <textarea id={'recipentLogins'} className={cs.createFormInput} onChange={(event) => {
                         getRecipentLogins(event);
-                    }}/>
+                    }} />
                 </div>
                 <button type={'button'} onClick={async function () {
                     if (requestData.chatName && requestData.senderLogin && requestData.recipientLogins) {
@@ -101,110 +97,11 @@ function Main() {
     const [user, setUser] = useState(undefined);
     const [chats, setChats] = useState([]);
     const [isTest, setTest] = useState(false);
-    // const chats = [
-    //     {
-    //         user: {
-    //             name: 'Petya',
-    //             avatar: 'olive',
-    //         },
-    //         text: 'Zdarova',
-    //     },
-    //     {
-    //         user: {
-    //             name: 'Vanya',
-    //             avatar: 'midnightblue',
-    //         },
-    //         text: 'Sheeeeeeeeeeeeeeeeeeeesh',
-    //     },
-    //     {
-    //         user: {
-    //             name: 'Alexey',
-    //             avatar: 'seagreen',
-    //         },
-    //         text: 'Chupapi Munyanya',
-    //     },
-    //     {
-    //         user: {
-    //             name: 'Vanya',
-    //             avatar: 'midnightblue',
-    //         },
-    //         text: 'Maksim lox',
-    //     },
-    //     {
-    //         user: {
-    //             name: 'Vanya',
-    //             avatar: 'midnightblue',
-    //         },
-    //         text: 'Maksim lox',
-    //     },
-    //     {
-    //         user: {
-    //             name: 'Vanya',
-    //             avatar: 'midnightblue',
-    //         },
-    //         text: 'Maksim lox',
-    //     },
-    //     {
-    //         user: {
-    //             name: 'Vanya',
-    //             avatar: 'midnightblue',
-    //         },
-    //         text: 'Maksim lox',
-    //     },
-    //     {
-    //         user: {
-    //             name: 'Vanya',
-    //             avatar: 'midnightblue',
-    //         },
-    //         text: 'Maksim lox',
-    //     },
-    //     {
-    //         user: {
-    //             name: 'Vanya',
-    //             avatar: 'midnightblue',
-    //         },
-    //         text: 'Maksim lox',
-    //     },
-    //     {
-    //         user: {
-    //             name: 'Vanya',
-    //             avatar: 'midnightblue',
-    //         },
-    //         text: 'Maksim lox',
-    //     },
-    //     {
-    //         user: {
-    //             name: 'Vanya',
-    //             avatar: 'midnightblue',
-    //         },
-    //         text: 'Maksim lox',
-    //     },
-    //     {
-    //         user: {
-    //             name: 'Vanya',
-    //             avatar: 'midnightblue',
-    //         },
-    //         text: 'Maksim lox',
-    //     },
-    //     {
-    //         user: {
-    //             name: 'Vanya',
-    //             avatar: 'midnightblue',
-    //         },
-    //         text: 'Maksim lox',
-    //     },
-    //     {
-    //         user: {
-    //             name: 'Vanya',
-    //             avatar: 'midnightblue',
-    //         },
-    //         text: 'Maksim lox',
-    //     },
-    // ];
     const [isAuth, setAuth] = useState(false);
     const [showCreateChat, setShowCreateChat] = useState(false);
     const [showChatScreen, setShowChatScreen] = useState(false);
     const [currentChat, setCurrentChat] = useState(undefined);
+    const [showInvitations, setShowInvitations] = useState(false);
 
     useEffect(async function(){
         if (user) {
@@ -250,6 +147,7 @@ function Main() {
             {isAuth && showCreateChat && <CreateChat login={user.login} closeForm={() => {
                 setShowCreateChat(false)
             }}/>}
+            {isAuth && showInvitations && <InvitationsWindow closeForm={() => setShowInvitations(false)}/>}
             {isAuth && <Sidebar
                 chats={chats}
                 openCreateChatForm={() => {
@@ -258,10 +156,13 @@ function Main() {
                 onChatClick={(chat) => {
                     setCurrentChat(chat);
                     history.push(`/chat`);
-                }}/>}
+                }}
+                openInvitationsWindow={() => setShowInvitations(true)} />
+            }
             {isAuth && showChatScreen && <ChatScreen
                 onCallClick={(roomId) => {
                     setShowChatScreen(false);
+                    setCurrentChat(undefined);
                     history.push(`/room/${roomId}`);
                 }}
                 user={user}
@@ -271,6 +172,7 @@ function Main() {
             {isAuth && <Rouiting
                 currentChat={currentChat}
                 onCallDeny={() => {
+                    //setShowChatScreen(true);
                     history.push('/')
                 }}
                 onCallClick={(roomId) => {
@@ -286,7 +188,7 @@ function Main() {
 const Rouiting = (props) => {
     return (
         <Switch>
-            <Route exact path='/' component={Home}/>
+            <Route exact path='/' component={Home} />
             {/*<Route path='/signin'>*/}
             {/*  <Signin/>*/}
             {/*</Route>*/}

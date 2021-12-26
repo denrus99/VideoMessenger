@@ -95,7 +95,7 @@
 
 .sidebarMenu {
     width: 360px;
-    height: 570px;
+    height: calc(100vh - 70px);
     top: 70px;
     background: #FFFFFF;
     display: flex;

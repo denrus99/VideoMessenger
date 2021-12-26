@@ -1,6 +1,6 @@
-﻿import React, {useEffect} from 'react';
-import {useParams} from "react-router";
-import useNewWebRTC from '../hooks/useNewWebRtc.js'
+﻿import React, { useEffect } from 'react';
+import { useParams } from "react-router";
+import useNewWebRTC from '../../hooks/useNewWebRtc.js'
 import cs from "./Room.module.css";
 
 const Video = (props) => {
@@ -18,17 +18,17 @@ const Video = (props) => {
             marginTop: '1%',
             borderRadius: '5%',
             boxShadow: '0 2px 4px 4px'
-        }}/>
+        }} />
     );
 };
 
 function CallHeader(props) {
     return (
         <div className={cs.callHeader}>
-            <img className={cs.callIcon} src={props.photoUrl}/>
+            <img className={cs.callIcon} src={props.photoUrl} />
             <div className={cs.callName}>{props.callName}</div>
             <button type={'button'} className={cs.btn}>
-                <img className={cs.btnDotsIcon} src={'/three_dots.png'}/>
+                <img className={cs.btnDotsIcon} src={'/three_dots.png'} />
             </button>
         </div>
     );
@@ -41,21 +41,21 @@ export default function Room(props) {
     return (
         <div className={cs.screenContainer}>
             <CallHeader callName={'Some call'}
-                        photoUrl={'https://cs5.pikabu.ru/post_img/2015/12/15/11/1450209491166030901.jpg'}/>
+                photoUrl={'https://cs5.pikabu.ru/post_img/2015/12/15/11/1450209491166030901.jpg'} />
             <div className={cs.videoContainer}>
                 <Video stream={localStream} isMuted={true} height={getHeight(remoteStreams.length)}/>
                 {remoteStreams.map((remoteStream) => <Video stream={remoteStream} isMuted={false}
-                                                            height={getHeight(remoteStreams.length)}/>)}
+                    height={getHeight(remoteStreams.length)} />)}
             </div>
             <div className={cs.callPanel}>
                 <button type={'button'} className={cs.panelBtn}>
-                    <img src={'/camera_icon.png'} className={cs.panelBtnIcon}/>
+                    <img src={'/camera_icon.png'} className={cs.panelBtnIcon} />
                 </button>
                 <button type={'button'} className={cs.panelBtn}>
-                    <img src={'/add_icon.png'} className={cs.panelBtnIcon}/>
+                    <img src={'/add_icon.png'} className={cs.panelBtnIcon} />
                 </button>
                 <button type={'button'} className={cs.panelBtn}>
-                    <img src={'/mic_icon.png'} className={cs.panelBtnIcon}/>
+                    <img src={'/mic_icon.png'} className={cs.panelBtnIcon} />
                 </button>
                 <button type={'button'} className={cs.declineBtn} onClick={props.onCallDeny}>
                     <img src={'/telephone_icon.png'} className={cs.panelBtnIcon}/>
