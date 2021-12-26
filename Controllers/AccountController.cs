@@ -7,10 +7,12 @@ using AuthApp.ViewModels;
 using VideoMessenger.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using BC = BCrypt.Net.BCrypt;
 using VideoMessenger.ViewModels;
 using System.Linq;
 using System.Text.Json;
+using System.Security.Cryptography;
+using System;
 
 namespace AuthApp.Controllers
 {
@@ -32,8 +34,8 @@ namespace AuthApp.Controllers
             if (ModelState.IsValid)
             {
                 // Ищем пользователя в базе данных
-                var user = await db.Users.FirstOrDefaultAsync(u => u.EmailAddress == model.EmailAddress && u.Password == model.Password);
-                if (user != null)
+                var user = await db.Users.FirstOrDefaultAsync(u => u.EmailAddress == model.EmailAddress);
+                if (user != null && BC.Verify(model.Password, user.Password))
                 {
                     await Authenticate(model.EmailAddress); // Аутентификация
                     return Ok(user);
@@ -58,13 +60,14 @@ namespace AuthApp.Controllers
                 if (await db.Users.FirstOrDefaultAsync(u => u.PhoneNumber == model.PhoneNumber) != null)
                     return NotFound("PhoneNumber is already in use");
 
+                // Создаем пользователя
                 var user = new User()
                 {
                     Username = model.Login,
                     Login = model.Login,
                     PhoneNumber = model.PhoneNumber,
                     EmailAddress = model.EmailAddress,
-                    Password = model.Password
+                    Password = BC.HashPassword(model.Password)
                 };
 
                 db.Users.Add(user); // Добавляем в базу данных
@@ -76,15 +79,15 @@ namespace AuthApp.Controllers
         }
 
         // Метод аутентификации с помощью Cookies
-        private async Task Authenticate(string userName)
+        private async Task Authenticate(string email)
         {
             // Создаем один claim
             var claims = new List<Claim>
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, userName)
+                new Claim(ClaimsIdentity.DefaultNameClaimType, email)
             };
             // Создаем объект ClaimsIdentity
-            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+            var id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             // Установка аутентификационных куки
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
