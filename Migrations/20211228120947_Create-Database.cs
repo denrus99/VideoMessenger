@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace VideoMessenger.Migrations
 {
-    public partial class Createdatabase : Migration
+    public partial class CreateDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -221,9 +221,9 @@ namespace VideoMessenger.Migrations
                 columns: new[] { "Id", "EmailAddress", "Login", "Password", "PhoneNumber", "Username" },
                 values: new object[,]
                 {
-                    { -1, "vasya322@ya.ru", "Pupok", "ahc4ahlv4lt", "+78222345678", "Vasya" },
-                    { -2, "igor2005@ya.ru", "Uxo", "aklovfaoper", "+79221234564", "Igor" },
-                    { -3, "sodeep@ya.ru", "Poland", "12345", "+78921234567", "Masha" }
+                    { -1, "vasya322@ya.ru", "Pupok", "$2a$11$aM0vfoLUHEqor6PfJZuiruGpPWtaWz3Q9lu1yja20fYme4A.1gIZ6", "+78222345678", "Vasya" },
+                    { -2, "igor2005@ya.ru", "Uxo", "$2a$11$g5CtJNIfcaPEdaMtYU1Kb.JD8UrjOJu3S.9cEIsCC4TdAVxFffNHi", "+79221234564", "Igor" },
+                    { -3, "sodeep@ya.ru", "Poland", "$2a$11$/Fo41l/YUEU4L6iPU2m7M.ZXj8Fp571mTw/us3MIV6LDmVpLgx1gS", "+78921234567", "Masha" }
                 });
 
             migrationBuilder.InsertData(
@@ -260,7 +260,7 @@ namespace VideoMessenger.Migrations
                     { -2, -1, new DateTime(2021, 12, 16, 13, 16, 12, 191, DateTimeKind.Local), "Привет, нормально", true, -2 },
                     { -5, -1, new DateTime(2021, 12, 16, 13, 16, 20, 191, DateTimeKind.Local), "Что случилось?", true, -2 },
                     { -9, -1, new DateTime(2021, 12, 16, 13, 16, 36, 191, DateTimeKind.Local), "Приезжайте ко мне, будем в шашки играть", true, -3 },
-                    { -10, -1, new DateTime(2021, 12, 1, 13, 16, 38, 191, DateTimeKind.Local), "Выезжаю...", false, -1 },
+                    { -10, -1, new DateTime(2021, 12, 16, 13, 16, 38, 191, DateTimeKind.Local), "Выезжаю...", false, -1 },
                     { -6, -1, new DateTime(2021, 12, 16, 13, 16, 25, 191, DateTimeKind.Local), "Получил 4 по алгебре", true, -1 },
                     { -4, -1, new DateTime(2021, 12, 16, 13, 16, 16, 191, DateTimeKind.Local), "Могло быть и лучше", true, -1 },
                     { -1, -1, new DateTime(2021, 12, 16, 13, 16, 10, 191, DateTimeKind.Local), "Привет, как у вас дела?", true, -1 },
