@@ -112,11 +112,9 @@ namespace AuthApp.Controllers
                                            .Include(o => o.Role)
                                            .Where(o=>o.User.Login == login)
                                            .ToArrayAsync();
-            var chats = new List<Chat>();
-            foreach (var participation in userParticipations)
-            {
-                chats.Add(db.Chats.First(x => x.Id == participation.ChatId));
-            }
+
+
+            var chats = userParticipations.Select(x => x.Chat).ToArray();
             foreach (var chat in chats)
             {
                 var lastMessage = db.Messages.OrderByDescending(m => m.CreationDate)
