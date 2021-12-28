@@ -63,12 +63,16 @@ namespace VideoMessenger.Controllers
         [HttpGet]
         [Route("chats/{id:int}/messages")]
         public async Task<IActionResult> GetChatMessages(int id)
-        {       
-            var messages = await db.Messages.Include(m=>m.Chat)
-                                      .Include(m=>m.Sender)
+        {
+            if (db.Chats.FirstOrDefault(c => c.Id == id) == null)
+                return NotFound("Чата с таким id не существует");
+            var messages = await db.Messages.Include(m => m.Chat)
+                                      .Include(m => m.Sender)
                                       .Where(m => m.ChatId == id)
                                       .OrderByDescending(m => m.CreationDate)
+                                      .Select(m => new MessagesInfo(m))
                                       .ToArrayAsync();
+            
             var json = JsonSerializer.Serialize(messages);
             return Ok(json);
         }
