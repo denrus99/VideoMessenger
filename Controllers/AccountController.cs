@@ -117,40 +117,11 @@ namespace AuthApp.Controllers
             var chats = userParticipations.Select(x => x.Chat).ToArray();
             foreach (var chat in chats)
             {
-                var lastMessage = db.Messages.OrderByDescending(m => m.CreationDate)
-                    .Where(m => m.ChatId == chat.Id).FirstOrDefault();
-                if (lastMessage != null)
-                {
-                    var info = new
-                    {
-                        ChatId = chat.Id,
-                        ChatName = chat.ChatName,
-                        LastMessage = new 
-                        { 
-                            Data = lastMessage.Data, 
-                            Sender = lastMessage.Sender,
-                            IsReaded = lastMessage.IsReaded, 
-                            CreationDate = lastMessage.CreationDate
-                        }
-                    };
-                    res.Add(info);
-                }
-                else
-                {
-                    var info = new
-                    {
-                        ChatId = chat.Id,
-                        ChatName = chat.ChatName,
-                        LastMessage = new 
-                        { 
-                            Data = "В этом чате нет сообщений.", 
-                            Sender = "",
-                            IsReaded = false.ToString(), 
-                            CreationDate = ""
-                        }
-                    };
-                    res.Add(info);
-                }
+                var lastMessage = db.Messages.Include(m => m.Sender)
+                                             .Where(m => m.ChatId == chat.Id)
+                                             .OrderByDescending(m => m.CreationDate)
+                                             .FirstOrDefault();
+                res.Add(new ChatInfo(chat, lastMessage));            
             }
             
             var json = JsonSerializer.Serialize(res);
