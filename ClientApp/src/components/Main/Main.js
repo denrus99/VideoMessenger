@@ -147,7 +147,11 @@ function Main() {
             {isAuth && showCreateChat && <CreateChat login={user.login} closeForm={() => {
                 setShowCreateChat(false)
             }}/>}
-            {isAuth && showInvitations && <InvitationsWindow closeForm={() => setShowInvitations(false)}/>}
+            {isAuth && showInvitations && <InvitationsWindow 
+                login={user.login} 
+                closeForm={() => setShowInvitations(false)} 
+                addChat={(chat) => setChats([...chats, chat])} />
+            }
             {isAuth && <Sidebar
                 chats={chats}
                 openCreateChatForm={() => {
