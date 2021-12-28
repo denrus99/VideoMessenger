@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+using BC = BCrypt.Net.BCrypt;
 
 namespace VideoMessenger.Models
 {
@@ -64,9 +65,9 @@ namespace VideoMessenger.Models
                 );
 
             builder.Entity<User>().HasData(
-                new User() { Id = -1, Username = "Vasya", Login = "Pupok", EmailAddress = "vasya322@ya.ru", Password = "ahc4ahlv4lt", PhoneNumber = "+78222345678" },
-                new User() { Id = -2, Username = "Igor", Login = "Uxo", EmailAddress = "igor2005@ya.ru", Password = "aklovfaoper", PhoneNumber = "+79221234564" },
-                new User() { Id = -3, Username = "Masha", Login = "Poland", EmailAddress = "sodeep@ya.ru", Password = "12345", PhoneNumber = "+78921234567" });
+                new User() { Id = -1, Username = "Vasya", Login = "Pupok", EmailAddress = "vasya322@ya.ru", Password = BC.HashPassword("1"), PhoneNumber = "+78222345678" },
+                new User() { Id = -2, Username = "Igor", Login = "Uxo", EmailAddress = "igor2005@ya.ru", Password = BC.HashPassword("2"), PhoneNumber = "+79221234564" },
+                new User() { Id = -3, Username = "Masha", Login = "Poland", EmailAddress = "sodeep@ya.ru", Password = BC.HashPassword("3"), PhoneNumber = "+78921234567" });
 
             builder.Entity<Friends>().HasData(
                 new Friends(-1, -2),
@@ -90,7 +91,7 @@ namespace VideoMessenger.Models
                 new Message() { Id = -7, SenderId = -3, ChatId= -1, Data="У меня вообще тройка, не стоит отчаиваться", CreationDate= new DateTime(2021, 12, 16, 13, 16, 30, 191, DateTimeKind.Local), IsReaded = true },
                 new Message() { Id = -8, SenderId = -2, ChatId= -1, Data="Нормально все будет", CreationDate= new DateTime(2021, 12, 16, 13, 16, 35, 191, DateTimeKind.Local), IsReaded = true },
                 new Message() { Id = -9, SenderId = -3, ChatId= -1, Data="Приезжайте ко мне, будем в шашки играть", CreationDate= new DateTime(2021, 12, 16, 13, 16, 36, 191, DateTimeKind.Local), IsReaded = true },
-                new Message() { Id = -10, SenderId = -1, ChatId= -1, Data="Выезжаю...", CreationDate= new DateTime(2021, 12, 1, 13, 16, 38, 191, DateTimeKind.Local), IsReaded = false },
+                new Message() { Id = -10, SenderId = -1, ChatId= -1, Data="Выезжаю...", CreationDate= new DateTime(2021, 12, 16, 13, 16, 38, 191, DateTimeKind.Local), IsReaded = false },
                 new Message() { Id = -11, SenderId = -2, ChatId= -2, Data="Good bye, World!", CreationDate= new DateTime(2021, 12, 2, 20, 16, 11, 191, DateTimeKind.Local), IsReaded = true },
                 new Message() { Id = -12, SenderId = -3, ChatId= -2, Data="My life be like, uuuuaaaa", CreationDate= new DateTime(2021, 12, 2, 21, 16, 11, 191, DateTimeKind.Local), IsReaded = false }
                 );

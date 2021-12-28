@@ -311,7 +311,7 @@ namespace VideoMessenger.Migrations
                         {
                             Id = -10,
                             ChatId = -1,
-                            CreationDate = new DateTime(2021, 12, 1, 13, 16, 38, 191, DateTimeKind.Local),
+                            CreationDate = new DateTime(2021, 12, 16, 13, 16, 38, 191, DateTimeKind.Local),
                             Data = "Выезжаю...",
                             IsReaded = false,
                             SenderId = -1
@@ -414,7 +414,7 @@ namespace VideoMessenger.Migrations
                             Id = -1,
                             EmailAddress = "vasya322@ya.ru",
                             Login = "Pupok",
-                            Password = "ahc4ahlv4lt",
+                            Password = "$2a$11$aM0vfoLUHEqor6PfJZuiruGpPWtaWz3Q9lu1yja20fYme4A.1gIZ6",
                             PhoneNumber = "+78222345678",
                             Username = "Vasya"
                         },
@@ -423,7 +423,7 @@ namespace VideoMessenger.Migrations
                             Id = -2,
                             EmailAddress = "igor2005@ya.ru",
                             Login = "Uxo",
-                            Password = "aklovfaoper",
+                            Password = "$2a$11$g5CtJNIfcaPEdaMtYU1Kb.JD8UrjOJu3S.9cEIsCC4TdAVxFffNHi",
                             PhoneNumber = "+79221234564",
                             Username = "Igor"
                         },
@@ -432,7 +432,7 @@ namespace VideoMessenger.Migrations
                             Id = -3,
                             EmailAddress = "sodeep@ya.ru",
                             Login = "Poland",
-                            Password = "12345",
+                            Password = "$2a$11$/Fo41l/YUEU4L6iPU2m7M.ZXj8Fp571mTw/us3MIV6LDmVpLgx1gS",
                             PhoneNumber = "+78921234567",
                             Username = "Masha"
                         });
