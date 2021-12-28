@@ -25,6 +25,16 @@ namespace VideoMessenger.Controllers
             return View();
         }
 
+        [HttpGet]
+        [Route("/chat/{login}/invitation")]
+        /* Метод получения инвайтов в чат */
+        public async Task<IActionResult> GetChatInvitations(string login)
+        {
+            var invitations = await db.ChatInvitations.Include(x => x.Chat).Where(x => x.Recipient.Login == login).ToArrayAsync();
+            var json = JsonSerializer.Serialize(invitations);
+            return Ok(json);
+        }
+
         [HttpPut]
         [Route("/chat/accept")]
         /* Метод принятия в чат */
