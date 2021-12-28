@@ -112,47 +112,16 @@ namespace AuthApp.Controllers
                                            .Include(o => o.Role)
                                            .Where(o=>o.User.Login == login)
                                            .ToArrayAsync();
-            var chats = new List<Chat>();
-            foreach (var participation in userParticipations)
-            {
-                chats.Add(db.Chats.First(x => x.Id == participation.ChatId));
-            }
+
+
+            var chats = userParticipations.Select(x => x.Chat).ToArray();
             foreach (var chat in chats)
             {
-                var lastMessage = db.Messages.OrderByDescending(m => m.CreationDate)
-                    .Where(m => m.ChatId == chat.Id).FirstOrDefault();
-                if (lastMessage != null)
-                {
-                    var info = new
-                    {
-                        ChatId = chat.Id,
-                        ChatName = chat.ChatName,
-                        LastMessage = new 
-                        { 
-                            Data = lastMessage.Data, 
-                            SenderId = lastMessage.SenderId,
-                            IsReaded = lastMessage.IsReaded, 
-                            CreationDate = lastMessage.CreationDate
-                        }
-                    };
-                    res.Add(info);
-                }
-                else
-                {
-                    var info = new
-                    {
-                        ChatId = chat.Id,
-                        ChatName = chat.ChatName,
-                        LastMessage = new 
-                        { 
-                            Data = "В этом чате нет сообщений.", 
-                            Sender = "",
-                            IsReaded = false.ToString(), 
-                            CreationDate = ""
-                        }
-                    };
-                    res.Add(info);
-                }
+                var lastMessage = db.Messages.Include(m => m.Sender)
+                                             .Where(m => m.ChatId == chat.Id)
+                                             .OrderByDescending(m => m.CreationDate)
+                                             .FirstOrDefault();
+                res.Add(new ChatInfo(chat, lastMessage));            
             }
             
             var json = JsonSerializer.Serialize(res);

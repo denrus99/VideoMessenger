@@ -30,7 +30,13 @@ namespace VideoMessenger.Controllers
         /* Метод получения инвайтов в чат */
         public async Task<IActionResult> GetChatInvitations(string login)
         {
-            var invitations = await db.ChatInvitations.Include(x => x.Chat).Where(x => x.Recipient.Login == login).ToArrayAsync();
+            var invitations = await db.ChatInvitations
+                .Include(x => x.Chat)
+                .Include(x => x.Recipient)
+                .Include(x => x.Sender)
+                .Where(x => x.Recipient.Login == login)
+                .Select(x => new InvitationInfo(x))
+                .ToArrayAsync();
             var json = JsonSerializer.Serialize(invitations);
             return Ok(json);
         }
@@ -63,12 +69,16 @@ namespace VideoMessenger.Controllers
         [HttpGet]
         [Route("chats/{id:int}/messages")]
         public async Task<IActionResult> GetChatMessages(int id)
-        {       
-            var messages = await db.Messages.Include(m=>m.Chat)
-                                      .Include(m=>m.Sender)
+        {
+            if (db.Chats.FirstOrDefault(c => c.Id == id) == null)
+                return NotFound("Чата с таким id не существует");
+            var messages = await db.Messages.Include(m => m.Chat)
+                                      .Include(m => m.Sender)
                                       .Where(m => m.ChatId == id)
                                       .OrderByDescending(m => m.CreationDate)
+                                      .Select(m => new MessagesInfo(m))
                                       .ToArrayAsync();
+            
             var json = JsonSerializer.Serialize(messages);
             return Ok(json);
         }
