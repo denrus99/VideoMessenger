@@ -153,6 +153,7 @@ function Main() {
                 addChat={(chat) => setChats([...chats, chat])} />
             }
             {isAuth && <Sidebar
+                user={user}
                 chats={chats}
                 openCreateChatForm={() => {
                     setShowCreateChat(true)

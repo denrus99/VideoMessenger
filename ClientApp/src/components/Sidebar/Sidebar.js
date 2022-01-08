@@ -44,8 +44,8 @@ function SidebarMenu(props) {
 
 function Sidebar(props) {
     const [showMenu, setShow] = useState(false);
-    const userLogin = 'WJules';
-    const userEmail = 'Jules.Winston@gmail.com';
+    const userLogin = props.user.login;
+    const userEmail = props.user.emailAddress;
 
     return (
         <div className={cs.sidebar}>
