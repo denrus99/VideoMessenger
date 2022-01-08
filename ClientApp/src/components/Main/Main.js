@@ -13,36 +13,50 @@ import CreateChatWindow from '../CreateChatWindow/CreateChatWindow';
 import {HubConnectionBuilder} from "@microsoft/signalr";
 
 
-// function CreateCall(props) {
-//     return(
-//         <div className={cs.createForm}>
-//             <div className={cs.complexInput}>
-//                 <label htmlFor={'chatName'}>Название чата</label>
-//                 <input id={'chatName'} className={cs.createFormInput}/>
-//             </div>
-//             <div className={cs.complexInput}>
-//                 <label htmlFor={'recipentLogins'}>Участники чата</label>
-//                 <input id={'recipentLogins'} className={cs.createFormInput}/>
-//             </div>
-//         </div>
-//     )
-// }
-function Test(props) {
-    let message = "";
-    const connection = new HubConnectionBuilder()
-        .withUrl("https://localhost:5001/hubs/chat")
-        .withAutomaticReconnect()
-        .build();
-    connection.start()
-
-    function Send(message) {
-        connection.send("TestHub", message);
-    }
-
+function CreateChat(props) {
+    let requestData = {
+        chatName: undefined,
+        senderLogin: props.login,
+        recipientLogins: undefined
+    };
+    const getRecipentLogins = (event) => {
+        let arr = event.target.value.split('\n');
+        if (arr.length > 0) {
+            requestData.recipientLogins = [];
+            arr.forEach((item) => {
+                requestData.recipientLogins.push(item);
+            });
+        }
+    };
     return (
-        <div>
-            <input id={"message"} onChange={(event) => message = event.target.value}/>
-            <button onClick={() => (Send(message))}>Отправить</button>
+        <div className={cs.formBackground}>
+            <div className={cs.createForm}>
+                <div className={cs.createFormInput}>
+                    <label htmlFor={'chatName'}>Название чата</label>
+                    <input id={'chatName'} className={cs.createFormInput} onChange={(event) => {
+                        requestData.chatName = event.target.value;
+                    }} />
+                </div>
+                <div className={cs.createFormInput}>
+                    <label htmlFor={'recipentLogins'}>Участники чата</label>
+                    <textarea id={'recipentLogins'} className={cs.createFormInput} onChange={(event) => {
+                        getRecipentLogins(event);
+                    }} />
+                </div>
+                <button type={'button'} onClick={async function () {
+                    if (requestData.chatName && requestData.senderLogin && requestData.recipientLogins) {
+                        let result = await createChat(requestData.chatName, requestData.senderLogin, requestData.recipientLogins);
+                        if (result.status)
+                            getChats(requestData.senderLogin).then((result)=>{
+                                props.closeForm(result.chats);
+                            });
+                        else
+                            alert("Не удалось создать чат.")
+                    }
+                }}>
+                    Создать чат
+                </button>
+            </div>
         </div>
     )
 }
@@ -77,7 +91,7 @@ function Main() {
         if (currentChat){
             setShowChatScreen(true);
         }
-    }, [currentChat])
+    }, [currentChat]);
 
     const authenticateUser = async function (newUser, userData) {
         let response;
@@ -96,13 +110,12 @@ function Main() {
 
     return (
         <div className={cs.main}>
-            {/*<button type={'button'} onClick={() => setTest(!isTest)}>isTest</button>*/}
-            {/*{isTest && <Test/>}*/}
             {!isAuth && <Signin authenticateUser={authenticateUser}/>}
-            {isAuth && showCreateChat && <CreateChatWindow 
-                login={user.login} 
-                closeForm={() => setShowCreateChat(false)} />
-            }
+            {isAuth && showCreateChat && <CreateChatWindow login={user.login}
+                                                     closeForm={(newChats) => {
+                                                         setShowCreateChat(false)
+                                                         setChats(newChats)
+                                                     }}/>}
             {isAuth && showInvitations && <InvitationsWindow 
                 login={user.login} 
                 closeForm={() => setShowInvitations(false)} 
@@ -133,14 +146,12 @@ function Main() {
             {isAuth && <Rouiting
                 currentChat={currentChat}
                 onCallDeny={() => {
-                    //setShowChatScreen(true);
                     history.push('/')
                 }}
                 onCallClick={(roomId) => {
                     setShowChatScreen(false);
                     history.push(`/room/${roomId}`);
             }}/>}
-            {/*<ChatScreen />*/}
         </div>
     );
 }
@@ -150,16 +161,9 @@ const Rouiting = (props) => {
     return (
         <Switch>
             <Route exact path='/' component={Home} />
-            {/*<Route path='/signin'>*/}
-            {/*  <Signin/>*/}
-            {/*</Route>*/}
             <Route exact path='/room/:id'>
                 <Room onCallDeny={props.onCallDeny}/>
             </Route>
-            {/*<Route path='/lobby' component={Lobby} />*/}
-            {/*<Route path='/chat'>*/}
-            {/*    <ChatScreen onCallClick={props.onCallClick} chat={props.currentChat}/>*/}
-            {/*</Route>*/}
         </Switch>
 )
 }
