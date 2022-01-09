@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getInvitations, acceptChat } from '../../utils/fetchs'
+import ModalWindow from '../ModalWindow/ModalWindow';
 import cs from './InvitationsWindow.module.css';
 
 
@@ -19,26 +20,18 @@ function InvitationsWindow(props) {
     }, [props.login]);
 
     return (
-        <div className={cs.overlay} onClick={props.closeForm}>
-            <div className={cs.invitationsWindow} onClick={(evt) => evt.stopPropagation()}>
-                <div className={cs.title}>Приглашения</div>
-                <div className={cs.invitationsContainer}>
-                    {invitations.length !== 0
-                        ? invitations.map((chat, index) =>
-                            <Invitation
-                                key={chat.ChatId}
-                                recipientLogin={props.login}
-                                chat={chat}
-                                removeInvitation={() => setInvitations(invitations.filter((_, i) => index !== i))} 
-                                addChat={props.addChat}/>)
-                        : <div className={cs.empty}>{'Здесь пока пусто'}</div>
-                    }
-                </div>
-                <div className={cs.btnCloseWrapper}>
-                    <button className={cs.btnClose} onClick={props.closeForm}>Закрыть</button>
-                </div>
-            </div>
-        </div>
+        <ModalWindow close={props.closeForm} title={'Приглашения'}>
+            {invitations.length !== 0
+                ? invitations.map((chat, index) =>
+                    <Invitation
+                        key={chat.ChatId}
+                        recipientLogin={props.login}
+                        chat={chat}
+                        removeInvitation={() => setInvitations(invitations.filter((_, i) => index !== i))}
+                        addChat={props.addChat} />)
+                : <div className={cs.empty}>{'Здесь пока пусто'}</div>
+            }
+        </ModalWindow>
     );
 }
 
