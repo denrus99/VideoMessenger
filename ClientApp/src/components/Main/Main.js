@@ -13,53 +13,53 @@ import CreateChatWindow from '../CreateChatWindow/CreateChatWindow';
 import {HubConnectionBuilder} from "@microsoft/signalr";
 
 
-function CreateChat(props) {
-    let requestData = {
-        chatName: undefined,
-        senderLogin: props.login,
-        recipientLogins: undefined
-    };
-    const getRecipentLogins = (event) => {
-        let arr = event.target.value.split('\n');
-        if (arr.length > 0) {
-            requestData.recipientLogins = [];
-            arr.forEach((item) => {
-                requestData.recipientLogins.push(item);
-            });
-        }
-    };
-    return (
-        <div className={cs.formBackground}>
-            <div className={cs.createForm}>
-                <div className={cs.createFormInput}>
-                    <label htmlFor={'chatName'}>Название чата</label>
-                    <input id={'chatName'} className={cs.createFormInput} onChange={(event) => {
-                        requestData.chatName = event.target.value;
-                    }} />
-                </div>
-                <div className={cs.createFormInput}>
-                    <label htmlFor={'recipentLogins'}>Участники чата</label>
-                    <textarea id={'recipentLogins'} className={cs.createFormInput} onChange={(event) => {
-                        getRecipentLogins(event);
-                    }} />
-                </div>
-                <button type={'button'} onClick={async function () {
-                    if (requestData.chatName && requestData.senderLogin && requestData.recipientLogins) {
-                        let result = await createChat(requestData.chatName, requestData.senderLogin, requestData.recipientLogins);
-                        if (result.status)
-                            getChats(requestData.senderLogin).then((result)=>{
-                                props.closeForm(result.chats);
-                            });
-                        else
-                            alert("Не удалось создать чат.")
-                    }
-                }}>
-                    Создать чат
-                </button>
-            </div>
-        </div>
-    )
-}
+// function CreateChat(props) {
+//     let requestData = {
+//         chatName: undefined,
+//         senderLogin: props.login,
+//         recipientLogins: undefined
+//     };
+//     const getRecipentLogins = (event) => {
+//         let arr = event.target.value.split('\n');
+//         if (arr.length > 0) {
+//             requestData.recipientLogins = [];
+//             arr.forEach((item) => {
+//                 requestData.recipientLogins.push(item);
+//             });
+//         }
+//     };
+//     return (
+//         <div className={cs.formBackground}>
+//             <div className={cs.createForm}>
+//                 <div className={cs.createFormInput}>
+//                     <label htmlFor={'chatName'}>Название чата</label>
+//                     <input id={'chatName'} className={cs.createFormInput} onChange={(event) => {
+//                         requestData.chatName = event.target.value;
+//                     }} />
+//                 </div>
+//                 <div className={cs.createFormInput}>
+//                     <label htmlFor={'recipentLogins'}>Участники чата</label>
+//                     <textarea id={'recipentLogins'} className={cs.createFormInput} onChange={(event) => {
+//                         getRecipentLogins(event);
+//                     }} />
+//                 </div>
+//                 <button type={'button'} onClick={async function () {
+//                     if (requestData.chatName && requestData.senderLogin && requestData.recipientLogins) {
+//                         let result = await createChat(requestData.chatName, requestData.senderLogin, requestData.recipientLogins);
+//                         if (result.status)
+//                             getChats(requestData.senderLogin).then((result)=>{
+//                                 props.closeForm(result.chats);
+//                             });
+//                         else
+//                             alert("Не удалось создать чат.")
+//                     }
+//                 }}>
+//                     Создать чат
+//                 </button>
+//             </div>
+//         </div>
+//     )
+// }
 
 function Main() {
     const history = useHistory();

@@ -6,9 +6,9 @@ const configuration = { 'iceServers': [{ 'urls': 'stun:stun.l.google.com:19302' 
 export default function useNewWebRTC(roomId) {
     const [signalConnection, setSignalConnection] = useState();
     const [localStream, setLocalStream] = useState();
-    const [remoteStreams, setRemoteStreams] = useState([]);
+    const [remoteStreams, setRemoteStreams] = useState(new Map());
     //TODO: Если не пригодится, можно убрать. В принципе все соединения хранятся в замыканиях.
-    const [rtcConnections, setRtcConnections] = useState({});
+    const [rtcConnections, setRtcConnections] = useState(new Map());
     
     useEffect(() => {
         //Создаём сигнальный механизм
@@ -80,7 +80,25 @@ export default function useNewWebRTC(roomId) {
                         tempStreams.push(event.streams[0].id);
                         // При появлении нового потока в соединении установить его в качестве удаленного 
                         // @ts-ignore
-                        setRemoteStreams(prevState => [...prevState, event.streams[0]]);
+                        setRemoteStreams(prevState => new Map(prevState.set(clientId, event.streams[0])));
+                    }
+                };
+                newRtcConnection.onconnectionstatechange = (ev) => {
+                    console.log(ev);
+                    if (newRtcConnection.connectionState === "closed" || newRtcConnection.connectionState === "failed"){
+                        let connection = [...rtcConnections.entries()].filter(v => {console.log(v); return v[1].connection === newRtcConnection})[0];
+                        debugger
+                        console.log(connection);
+                        setRemoteStreams(prevState => {
+                            let temp = prevState;
+                            temp.delete(connection[0]);
+                            return new Map(temp);
+                        });
+                        setRtcConnections(prevState => {
+                            let temp = prevState;
+                            temp.delete(connection[0]);
+                            return new Map(temp);
+                        });
                     }
                 };
                 //Создаём оффер
@@ -94,7 +112,7 @@ export default function useNewWebRTC(roomId) {
                             });
                     });
 
-                setRtcConnections(prevState => ({...prevState, [clientId]: { connection: newRtcConnection, role: "Caller"}}));
+                setRtcConnections(prevState => (new Map(prevState.set(clientId, { connection: newRtcConnection, role: "Caller"}))));
             });
             
             //Получаем оффер, создаём ответ и отправляем его инициатору
@@ -120,7 +138,25 @@ export default function useNewWebRTC(roomId) {
                         tempStreams.push(event.streams[0].id);
                         // При появлении нового потока в соединении установить его в качестве удаленного 
                         // @ts-ignore
-                        setRemoteStreams(prevState => [...prevState, event.streams[0]]);
+                        setRemoteStreams(prevState => new Map(prevState.set(clientId, event.streams[0])));
+                    }
+                };
+                newRtcConnection.onconnectionstatechange = (ev) => {
+                    console.log(ev);
+                    if (newRtcConnection.connectionState === "closed" || newRtcConnection.connectionState === "failed"){
+                        let connection = [...rtcConnections.entries()].filter(v => {console.log(v); return v[1].connection === newRtcConnection})[0];
+                        debugger
+                        console.log(connection);
+                        setRemoteStreams(prevState => {
+                            let temp = prevState;
+                            temp.delete(connection[0]);
+                            return new Map(temp);
+                        });
+                        setRtcConnections(prevState => {
+                            let temp = prevState;
+                            temp.delete(connection[0]);
+                            return new Map(temp);
+                        });
                     }
                 };
                 newRtcConnection.onicecandidate = (event) => {
@@ -139,7 +175,7 @@ export default function useNewWebRTC(roomId) {
                                     .then(() => {
                                         // Отправляем локальный SDP инициатору в качестве ответа на оффер
                                         signalConnection.send('SendAnswer', clientId, newRtcConnection.localDescription);
-                                        setRtcConnections(prevState => ({...prevState, [clientId]: { connection: newRtcConnection, role: "Callee"}}));
+                                        setRtcConnections(prevState => (new Map(prevState.set(clientId, { connection: newRtcConnection, role: "Callee"}))));
                                     })
                             })
                     })
@@ -149,7 +185,8 @@ export default function useNewWebRTC(roomId) {
             return ()=>{
                 debugger
                 localStream.getTracks().forEach(m => m.stop());
-                remoteStreams.forEach(m => m.getTracks().forEach(t=>t.stop()))
+                remoteStreams.forEach(m => m.getTracks().forEach(t=>t.stop()));
+                [...rtcConnections].forEach((item, i, arr) => {console.log(item); item[1].connection.close()});
                 setLocalStream(undefined);
                 setRemoteStreams(undefined);
                 setRtcConnections(undefined);

@@ -43,9 +43,9 @@ export default function Room(props) {
             <CallHeader callName={'Some call'}
                 photoUrl={'https://cs5.pikabu.ru/post_img/2015/12/15/11/1450209491166030901.jpg'} />
             <div className={cs.videoContainer}>
-                <Video stream={localStream} isMuted={true} height={getHeight(remoteStreams.length)}/>
-                {remoteStreams.map((remoteStream) => <Video stream={remoteStream} isMuted={false}
-                    height={getHeight(remoteStreams.length)} />)}
+                <Video stream={localStream} isMuted={true} height={getHeight(remoteStreams.size)}/>
+                {[...remoteStreams].map((remoteStream) => <Video stream={remoteStream[1]} isMuted={false}
+                    height={getHeight(remoteStreams.size)} />)}
             </div>
             <div className={cs.callPanel}>
                 <button type={'button'} className={cs.panelBtn}>
