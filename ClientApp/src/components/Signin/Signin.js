@@ -59,8 +59,8 @@ function Signup(props) {
                 }} />
             </div>
             <div className={cs.complexInput}>
-                <label htmlFor={'password'} type={'password'} className={cs.signinLabel}>Пароль</label>
-                <input id={'password'} className={cs.signinInput} onChange={(event) => {
+                <label htmlFor={'password'} className={cs.signinLabel}>Пароль</label>
+                <input id={'password'} type={'password'} className={cs.signinInput} onChange={(event) => {
                     signupData.password = event.target.value;
                 }} />
             </div>
