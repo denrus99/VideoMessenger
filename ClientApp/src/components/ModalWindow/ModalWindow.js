@@ -4,6 +4,7 @@ import cs from './ModalWindow.module.css';
 
 function ModalWindow(props) {
     const title = props.title;
+    const showCloseBtn = props.showCloseBtn ?? true;
 
     return (
         <Overlay close={props.close}>
@@ -12,7 +13,7 @@ function ModalWindow(props) {
                 <div className={cs.container}>
                     {props.children}
                 </div>
-                <div className={cs.btnCloseWrapper}>
+                <div className={cs.btnCloseWrapper} style={showCloseBtn ? {display: 'flex'} : {display: 'none'}}>
                     <button className={cs.btnClose} onClick={props.close}>Закрыть</button>
                 </div>
             </div>
