@@ -35,6 +35,12 @@ namespace SignalRtcHubs
 
             await Clients.Caller.SendAsync("Joined", rooms[roomId]); 
         }
+        
+        public async Task ExitRoom(string roomId)
+        {
+            rooms[roomId].Remove(Context.ConnectionId);
+            await Clients.OthersInGroup(roomId).SendAsync("ClientExit", Context.ConnectionId);
+        }
 
         public async Task GetCreatedRooms()
         {

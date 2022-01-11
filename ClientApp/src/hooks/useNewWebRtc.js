@@ -13,7 +13,7 @@ export default function useNewWebRTC(roomId) {
     useEffect(() => {
         //Создаём сигнальный механизм
         const newSignalConnection = new HubConnectionBuilder()
-            .withUrl("https://localhost:5001/hubs/roomHub")
+            .withUrl("/hubs/roomHub")
             .withAutomaticReconnect()
             .build();
         setSignalConnection(newSignalConnection);
@@ -35,9 +35,6 @@ export default function useNewWebRTC(roomId) {
                             setLocalStream(stream);
                         });
                 });
-            return ()=>{
-                signalConnection.stop();
-            }
         }
     }, [signalConnection]);
     
@@ -87,7 +84,6 @@ export default function useNewWebRTC(roomId) {
                     console.log(ev);
                     if (newRtcConnection.connectionState === "closed" || newRtcConnection.connectionState === "failed"){
                         let connection = [...rtcConnections.entries()].filter(v => {console.log(v); return v[1].connection === newRtcConnection})[0];
-                        debugger
                         console.log(connection);
                         setRemoteStreams(prevState => {
                             let temp = prevState;
@@ -182,11 +178,26 @@ export default function useNewWebRTC(roomId) {
             });
             // Оповещаем остальных клиентов в комнате о том, что мы готовы общаться
             signalConnection.send('JoinRoom', roomId);
-            return ()=>{
-                debugger
+            signalConnection.on('ClientExit', function(clientId){
+                remoteStreams.get(clientId).getTracks().forEach(m => m.stop());
+                rtcConnections.get(clientId).connection.close();
+                setRemoteStreams(prevState => {
+                    let temp = prevState;
+                    temp.delete(clientId);
+                    return new Map(temp);
+                });
+                setRtcConnections(prevState => {
+                    let temp = prevState;
+                    temp.delete(clientId);
+                    return new Map(temp);
+                });
+            })
+            return function(){
                 localStream.getTracks().forEach(m => m.stop());
                 remoteStreams.forEach(m => m.getTracks().forEach(t=>t.stop()));
-                [...rtcConnections].forEach((item, i, arr) => {console.log(item); item[1].connection.close()});
+                [...rtcConnections].forEach((item) => {console.log(item); item[1].connection.close()});
+                signalConnection.send('ExitRoom', roomId);
+                signalConnection.stop();
                 setLocalStream(undefined);
                 setRemoteStreams(undefined);
                 setRtcConnections(undefined);
