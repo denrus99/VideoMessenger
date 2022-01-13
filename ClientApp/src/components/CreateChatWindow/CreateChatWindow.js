@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import cs from './CreateChatWindow.module.css';
 import ModalWindow from '../ModalWindow/ModalWindow';
-import { createChat } from '../../utils/fetchs';
+import {createChat, getChats} from '../../utils/fetchs';
 
 
 function CreateChatWindow(props) {
@@ -18,7 +18,9 @@ function CreateChatWindow(props) {
         } else {
             const response = await createChat(chatName, userLogin, recipients);
             if (response.status) {
-                props.closeForm();
+                getChats(userLogin).then((result)=>{
+                    props.closeForm(result.chats);
+                });
             } else {
                 alert('Не удалось создать чат.');
             }

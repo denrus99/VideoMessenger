@@ -37,4 +37,4 @@ packages/
 .idea/
 #DBSettings
 dbsettings.json
-
+.vscode/

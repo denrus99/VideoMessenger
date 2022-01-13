@@ -5,7 +5,9 @@ import cs from './MessageContainer.module.css';
 
 function MessageContainer(props) {
   let messages = props.messages;
-  messages.reverse();
+  messages.sort(function(a,b) {
+    return new Date(Date.parse(b.CreationDate)).getTime() - new Date(Date.parse(a.CreationDate)).getTime();
+  });
 
   return (
     <div className={cs.messageContainer}>
