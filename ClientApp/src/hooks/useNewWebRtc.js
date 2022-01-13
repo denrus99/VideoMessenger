@@ -3,7 +3,7 @@ import {HubConnectionBuilder} from "@microsoft/signalr";
 
 const configuration = { 'iceServers': [{ 'urls': 'stun:stun.l.google.com:19302' }] };
 
-export default function useNewWebRTC(roomId) {
+export default function useNewWebRTC(roomId, user) {
     const [signalConnection, setSignalConnection] = useState();
     const [localStream, setLocalStream] = useState();
     const [remoteStreams, setRemoteStreams] = useState(new Map());

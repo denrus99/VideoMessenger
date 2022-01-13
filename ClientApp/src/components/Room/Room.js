@@ -36,7 +36,7 @@ function CallHeader(props) {
 
 export default function Room(props) {
     const {id: roomId} = useParams();
-    const [localStream, remoteStreams] = useNewWebRTC(roomId);
+    const [localStream, remoteStreams] = useNewWebRTC(roomId, props.user);
 
     return (
         <div className={cs.screenContainer}>

@@ -10,62 +10,11 @@ import Room from "../Room/Room";
 import cs from "./Main.module.css"
 import InvitationsWindow from '../InvitationsWindow/InvitationsWindow';
 import CreateChatWindow from '../CreateChatWindow/CreateChatWindow';
-import {HubConnectionBuilder} from "@microsoft/signalr";
-
-
-// function CreateChat(props) {
-//     let requestData = {
-//         chatName: undefined,
-//         senderLogin: props.login,
-//         recipientLogins: undefined
-//     };
-//     const getRecipentLogins = (event) => {
-//         let arr = event.target.value.split('\n');
-//         if (arr.length > 0) {
-//             requestData.recipientLogins = [];
-//             arr.forEach((item) => {
-//                 requestData.recipientLogins.push(item);
-//             });
-//         }
-//     };
-//     return (
-//         <div className={cs.formBackground}>
-//             <div className={cs.createForm}>
-//                 <div className={cs.createFormInput}>
-//                     <label htmlFor={'chatName'}>Название чата</label>
-//                     <input id={'chatName'} className={cs.createFormInput} onChange={(event) => {
-//                         requestData.chatName = event.target.value;
-//                     }} />
-//                 </div>
-//                 <div className={cs.createFormInput}>
-//                     <label htmlFor={'recipentLogins'}>Участники чата</label>
-//                     <textarea id={'recipentLogins'} className={cs.createFormInput} onChange={(event) => {
-//                         getRecipentLogins(event);
-//                     }} />
-//                 </div>
-//                 <button type={'button'} onClick={async function () {
-//                     if (requestData.chatName && requestData.senderLogin && requestData.recipientLogins) {
-//                         let result = await createChat(requestData.chatName, requestData.senderLogin, requestData.recipientLogins);
-//                         if (result.status)
-//                             getChats(requestData.senderLogin).then((result)=>{
-//                                 props.closeForm(result.chats);
-//                             });
-//                         else
-//                             alert("Не удалось создать чат.")
-//                     }
-//                 }}>
-//                     Создать чат
-//                 </button>
-//             </div>
-//         </div>
-//     )
-// }
 
 function Main() {
     const history = useHistory();
     const [user, setUser] = useState(undefined);
     const [chats, setChats] = useState([]);
-    const [isTest, setTest] = useState(false);
     const [isAuth, setAuth] = useState(false);
     const [showCreateChat, setShowCreateChat] = useState(false);
     const [showChatScreen, setShowChatScreen] = useState(false);
@@ -144,6 +93,7 @@ function Main() {
             />
             }
             {isAuth && <Rouiting
+                user={user}
                 currentChat={currentChat}
                 onCallDeny={() => {
                     history.push('/')
@@ -162,7 +112,7 @@ const Rouiting = (props) => {
         <Switch>
             <Route exact path='/' component={Home} />
             <Route exact path='/room/:id'>
-                <Room onCallDeny={props.onCallDeny}/>
+                <Room onCallDeny={props.onCallDeny} currentChat={props.currentChat} user={props.user}/>
             </Route>
         </Switch>
 )
