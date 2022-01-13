@@ -25,15 +25,17 @@ function Message(props) {
     else {
         return (
             <div className={(props.message.sender.login == props.userLogin) ? cs.localMessage : cs.message}>
-                <div className= {cs.userLogin}>
-                    {(props.message.sender.login == props.userLogin) ? "Вы:" : props.message.sender.login + ":"}
+                <div className={cs.container}>
+                    <div className= {cs.userLogin}>
+                        {(props.message.sender.login == props.userLogin) ? "Вы:" : props.message.sender.login + ":"}
+                    </div>
                     <div className={cs.messageText}>
                         {props.message.data}
                     </div>
                     <div className={cs.messageDate}>
                         {getDateInRightFormat(props.message.creationDate)}
                     </div>
-                </div>
+                </div>  
             </div>
         );
     }
